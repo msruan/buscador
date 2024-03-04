@@ -1,0 +1,2 @@
+Apenas uma observação: por algum motivo, encontrei problemas na 5ª questçao ao digitar palavras como limão, o caractere acentuado não
+estava sendo lido corretamente. Se o mesmo ocorrer com você, basta substituir o question que pede a palavra por a mesma diretamente.

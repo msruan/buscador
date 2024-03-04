@@ -11,7 +11,7 @@ import { question } from 'readline-sync';
 async function main(){
 
     //sample: "https://meidesu.github.io/programacao-para-internet/";
-    const url = question("Type a url, and we will get its links: ");
+    const url = question("Type a url to search a word: ");
     const searched = question("Type the searched word: ");;
     const response = await fetch(url);
     const body = await response.text();

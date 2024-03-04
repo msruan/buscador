@@ -19,8 +19,9 @@ async function main() {
 
     const root = parse(body);
     const links = root.querySelectorAll("a");
-    
+
     console.log("Links: ");
+
     for(let link of links){
         console.log(link.getAttribute("href"));
     }
