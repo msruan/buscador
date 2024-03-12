@@ -1,0 +1,1 @@
+-> Suportar várias fontes de sites diferentes (limitado no momento pela questão de como nomear os arquivos e os diretorios)

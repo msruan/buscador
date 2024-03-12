@@ -35,24 +35,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.downloadPages = void 0;
+exports.downloadPages = exports.readWebPageHTML = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const node_html_parser_1 = require("node-html-parser");
 const fs = __importStar(require("fs"));
-function downloadPages(url) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const file_name = takeLastElement(url);
-        const text = yield readWebPageHTML(url);
-        downloadPage(text, file_name);
-        let downloaded_pages = [file_name];
-        const root_DOM = (0, node_html_parser_1.parse)(text);
-        const links = root_DOM.querySelectorAll("a");
-        for (let link of links) {
-            console.log(link.textContent);
-        }
-    });
-}
-exports.downloadPages = downloadPages;
 function readWebPageHTML(url) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield (0, node_fetch_1.default)(url);
@@ -60,16 +46,59 @@ function readWebPageHTML(url) {
         return html;
     });
 }
+exports.readWebPageHTML = readWebPageHTML;
+function downloadPages(url) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const file_name = takeLastElement(url);
+        if (jaVisiteiEssaPagina(file_name)) {
+            return;
+        }
+        // console.log("Adicionei o site ",file_name, " pq atualmente os visitados sao ",visitedLinks)
+        // const file_name : string = url;
+        const text = yield readWebPageHTML(url);
+        downloadPage(text, file_name);
+        const DOM = (0, node_html_parser_1.parse)(text);
+        const links = DOM.querySelectorAll("a");
+        for (let a of links) {
+            let href = a.getAttribute("href") || "";
+            let page_name = takeLastElement(href);
+            href = trasnformarURLRelativaEmNormal(url, page_name);
+            // console.log(href);
+            yield downloadPages(href);
+        }
+    });
+}
+exports.downloadPages = downloadPages;
 function downloadPage(text, page_name) {
-    const sites_dir = '../sites';
+    const sites_dir = '../sites'; //@Todo: dá pra melhorar ess lógica, usando funções pra pegar o diretório atual por exemplo
     if (!fs.existsSync(sites_dir)) {
         fs.mkdirSync(sites_dir, { recursive: true });
     }
     fs.writeFileSync(`../sites/${page_name}`, text);
+}
+function jaVisiteiEssaPagina(file_name) {
+    const sites_dir = '../sites'; //@Todo: dá pra melhorar ess lógica, usando funções pra pegar o diretório atual por exemplo
+    if (!fs.existsSync(sites_dir)) {
+        return false;
+    }
+    return fs.existsSync(`../sites/${file_name}`);
 }
 function takeLastElement(url) {
     const elements = url.split("/");
     const lastIndex = elements.length - 1;
     return elements[lastIndex];
 }
-downloadPages("https://msruan.github.io/samples/matrix.html");
+function trasnformarURLRelativaEmNormal(urlPaginaInicial, urlRelativa) {
+    const urlQuebrada = urlPaginaInicial.split("/");
+    // for(let parte of urlQuebrada){
+    //     console.log(parte);
+    // }
+    const numeroDeDiretoriosAVoltar = contarOcorrenciasSubstring(urlPaginaInicial, '..');
+    const lastIndex = urlQuebrada.length - 1 - numeroDeDiretoriosAVoltar;
+    urlQuebrada[lastIndex] = urlRelativa;
+    return urlQuebrada.join("/");
+}
+function contarOcorrenciasSubstring(str, substr) {
+    return str.split(substr).length - 1;
+}
+// downloadPages("https://msruan.github.io/samples/matrix.html");
