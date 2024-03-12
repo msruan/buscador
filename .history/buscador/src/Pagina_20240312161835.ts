@@ -1,0 +1,3 @@
+class Pagina {
+    private link
+}

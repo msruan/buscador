@@ -4,4 +4,4 @@ async function main(){
     let google : Buscador = new Buscador();
     await google.main();
 }
-main();
+main()
