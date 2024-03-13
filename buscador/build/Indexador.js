@@ -57,7 +57,7 @@ class Indexador {
     }
     carregarPaginasBaixadas() {
         const nomeDasPaginasBaixadas = this.listarArquivosDoDiretorio('../sites');
-        console.log(nomeDasPaginasBaixadas);
+        // console.log(nomeDasPaginasBaixadas)
         for (let nome of nomeDasPaginasBaixadas) {
             const conteudo = fs.readFileSync(`../sites/${nome}`).toString();
             const pagina = new Pagina_1.Pagina(nome, conteudo);
@@ -83,7 +83,7 @@ class Indexador {
                 // console.log(href);
                 yield this.downloadPages(href);
             }
-            console.log("Indexador diz: páginas baixadas!");
+            // console.log("Indexador diz: páginas baixadas!")
         });
     }
     downloadPage(text, page_name) {

@@ -32,6 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.listarArquivosDoDiretorio = void 0;
 const Buscador_1 = require("./Buscador");
 const Indexador_1 = require("./Indexador");
 const fs = __importStar(require("fs"));
@@ -40,7 +41,7 @@ function main() {
         let indexador = new Indexador_1.Indexador();
         // await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
         let google = new Buscador_1.Buscador(indexador);
-        yield google.main();
+        console.log(yield google.main());
         // console.log(listarArquivosDoDiretorio('../sites'));
     });
 }
@@ -53,4 +54,5 @@ function listarArquivosDoDiretorio(diretorio) {
     return arquivos;
     // downloadPages("https://msruan.github.io/samples/matrix.html");   
 }
+exports.listarArquivosDoDiretorio = listarArquivosDoDiretorio;
 main();

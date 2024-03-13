@@ -33,11 +33,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Buscador = void 0;
+const Pagina_1 = require("./Pagina");
 const node_html_parser_1 = require("node-html-parser");
 const fs = __importStar(require("fs"));
 class Buscador {
     constructor(indexador) {
         this.indexador = indexador;
+    }
+    pesquisa(termo_procurado) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
     }
     main() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -57,26 +62,32 @@ class Buscador {
             };
             // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
             // const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
-            const paginaInicial = this.indexador.paginasBaixadas[1];
-            console.log(paginaInicial);
-            this.calcularPontuacoes(home_text, searched_term);
+            const paginas = this.indexador.paginasBaixadas;
+            const paginasScores = [];
+            for (let pagina of paginas) {
+                const score = this.calcularPontuacoes(pagina, searched_term);
+                const paginaScore = new Pagina_1.PaginaScore(pagina, score);
+                paginasScores.push(paginaScore);
+            }
+            return paginasScores;
         });
     }
     calcularPontuacoes(pagina, searched_term) {
-        // const html : string = pagina.content
+        const html = pagina.content;
         let scores = { "h1": 15, "h2": 10, "p": 5, "a": 2, "autoridade": 20, "autoreferencia": -20, "fresco": 30, "velho": -5 };
-        this.calcularUsoDeTags(pagina, searched_term, scores);
-        this.calcularFrescor(pagina, scores);
-        // this.calcularAutoreferencia(pagina,scores);
-        console.log(scores);
+        this.calcularUsoDeTags(html, searched_term, scores);
+        this.calcularFrescor(html, scores);
+        this.calcularAutoreferencia(pagina, scores);
+        // console.log(scores);
+        return scores;
     }
     calcularUsoDeTags(html, searched_term, scores) {
         const DOOM = (0, node_html_parser_1.parse)(html);
-        console.log("É " + DOOM.id);
+        // console.log("É "+DOOM.id);
         const h1s = DOOM.querySelectorAll("h1");
         const h2s = DOOM.querySelectorAll("h2");
         const ps = DOOM.querySelectorAll("p");
-        console.log("O numero de ocorrencias em p é ", ps.length);
+        // console.log("O numero de ocorrencias em p é ",ps.length)
         const as = DOOM.querySelectorAll("a");
         let h1s_ocorrencias = 0;
         let h2s_ocorrencias = 0;
@@ -116,8 +127,8 @@ class Buscador {
                 const last_index = splited.length - 1;
                 const data_str = splited[last_index];
                 const data = this.devolverData(data_str);
-                console.log("A data é " + data);
-                console.log("A data atual é " + new Date());
+                // console.log("A data é "+data);
+                // console.log("A data atual é "+new Date());
                 const diferencaDeAnos = new Date().getFullYear() - data.getFullYear();
                 if (diferencaDeAnos == 0)
                     scores.velho = 0;
@@ -139,19 +150,24 @@ class Buscador {
         const DOM = (0, node_html_parser_1.parse)(html);
         const as = DOM.querySelectorAll("a");
         let autoreferencias = 0;
-        console.log("To em cima do for");
+        // console.log("To em cima do for")
         for (let a of as) {
             const href = a.getAttribute("href") || "";
-            console.log("O href é " + href);
             if (this.indexador.takeLastElement(link) == href) {
                 autoreferencias++;
             }
         }
-        console.log("Numero de autoreferencias: " + autoreferencias);
         scores.autoreferencia = autoreferencias * scores.autoreferencia;
     }
     contarOcorrenciasSubstring(str, substr) {
         return str.split(substr).length - 1;
+    }
+    calcularAutoridade(paginaACalcular, paginas) {
+        const links = {
+            "matriz.html": 0
+        };
+        const nomesDasPaginas = [];
+        paginas.forEach((pagina) => nomesDasPaginas.push(pagina.link));
     }
 }
 exports.Buscador = Buscador;
