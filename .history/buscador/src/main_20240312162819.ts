@@ -1,1 +1,0 @@
-import { Buscador } from "./Buscador";

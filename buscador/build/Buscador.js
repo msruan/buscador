@@ -35,12 +35,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Buscador = void 0;
 const node_html_parser_1 = require("node-html-parser");
 const fs = __importStar(require("fs"));
-const Downloader_1 = require("./Downloader");
 class Buscador {
-    // private paginas : Pagina[];
+    constructor(indexador) {
+        this.indexador = indexador;
+    }
     main() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield new Downloader_1.Downloader().downloadPages("https://msruan.github.io/samples/matrix.html");
+            yield this.indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
             const home = "../sites/matrix.html"; //question("Digite o nome da página inicial: ");
             let home_text = fs.readFileSync(home, 'utf8');
             const searched_term = "matriz";
@@ -56,8 +57,18 @@ class Buscador {
             };
             // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
             // const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
+            const paginaInicial = this.indexador.paginasBaixadas[1];
+            console.log(paginaInicial);
             this.calcularPontuacoes(home_text, searched_term);
         });
+    }
+    calcularPontuacoes(pagina, searched_term) {
+        // const html : string = pagina.content
+        let scores = { "h1": 15, "h2": 10, "p": 5, "a": 2, "autoridade": 20, "autoreferencia": -20, "fresco": 30, "velho": -5 };
+        this.calcularUsoDeTags(pagina, searched_term, scores);
+        this.calcularFrescor(pagina, scores);
+        // this.calcularAutoreferencia(pagina,scores);
+        console.log(scores);
     }
     calcularUsoDeTags(html, searched_term, scores) {
         const DOOM = (0, node_html_parser_1.parse)(html);
@@ -96,7 +107,7 @@ class Buscador {
         scores.p = scores.p * ps_ocorrencias;
         scores.a = scores.a * as_ocorrencias;
     }
-    calcularFrescor(html, searched_term, scores) {
+    calcularFrescor(html, scores) {
         const DOOM = (0, node_html_parser_1.parse)(html);
         const ps = DOOM.querySelectorAll("p");
         for (let p of ps) {
@@ -122,11 +133,22 @@ class Buscador {
         var data = new Date(partesData[2], partesData[1] - 1, partesData[0]);
         return data;
     }
-    calcularPontuacoes(site_html, searched_term) {
-        let scores = { "h1": 15, "h2": 10, "p": 5, "a": 2, "autoridade": 20, "autoreferencia": -20, "fresco": 30, "velho": -5 };
-        this.calcularUsoDeTags(site_html, searched_term, scores);
-        this.calcularFrescor(site_html, searched_term, scores);
-        console.log(scores);
+    calcularAutoreferencia(pagina, scores) {
+        const link = pagina.link;
+        const html = pagina.content;
+        const DOM = (0, node_html_parser_1.parse)(html);
+        const as = DOM.querySelectorAll("a");
+        let autoreferencias = 0;
+        console.log("To em cima do for");
+        for (let a of as) {
+            const href = a.getAttribute("href") || "";
+            console.log("O href é " + href);
+            if (this.indexador.takeLastElement(link) == href) {
+                autoreferencias++;
+            }
+        }
+        console.log("Numero de autoreferencias: " + autoreferencias);
+        scores.autoreferencia = autoreferencias * scores.autoreferencia;
     }
     contarOcorrenciasSubstring(str, substr) {
         return str.split(substr).length - 1;

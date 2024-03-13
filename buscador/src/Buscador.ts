@@ -5,12 +5,19 @@ import fetch from 'node-fetch'
 import {parse} from 'node-html-parser'
 import * as fs from 'fs'
 import * as jsonfile from 'jsonfile'
-import { Downloader } from "./Downloader";
+import {Indexador } from "./Indexador";
 export class Buscador {
     // private paginas : Pagina[];
 
+    private indexador : Indexador
+
+    constructor(indexador: Indexador){
+        this.indexador = indexador;
+    }
+
     async main(){
-        await new Downloader().downloadPages("https://msruan.github.io/samples/matrix.html");
+
+        await this.indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
         const home : string = "../sites/matrix.html"//question("Digite o nome da página inicial: ");
         let home_text = fs.readFileSync(home, 'utf8');
 
@@ -28,7 +35,19 @@ export class Buscador {
         }
         // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
         // const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
+        const paginaInicial : Pagina = this.indexador.paginasBaixadas[1];
+        console.log(paginaInicial)
         this.calcularPontuacoes(home_text,searched_term);
+    }
+
+    private calcularPontuacoes(pagina : string, searched_term : string)  {// : ScoreObject
+
+        // const html : string = pagina.content
+        let scores : ScoreObject = {"h1":15,"h2":10,"p":5,"a":2,"autoridade":20,"autoreferencia":-20,"fresco":30,"velho":-5}
+        this.calcularUsoDeTags(pagina,searched_term,scores);
+        this.calcularFrescor(pagina,scores);
+        // this.calcularAutoreferencia(pagina,scores);
+        console.log(scores);
     }
 
     private calcularUsoDeTags(html : string, searched_term : string, scores : ScoreObject){
@@ -73,7 +92,7 @@ export class Buscador {
         scores.a = scores.a * as_ocorrencias;
     }
 
-    private calcularFrescor(html : string, searched_term : string, scores : ScoreObject){
+    private calcularFrescor(html : string, scores : ScoreObject){
         const DOOM = parse(html);
         const ps = DOOM.querySelectorAll("p");
         for(let p of ps){
@@ -101,15 +120,24 @@ export class Buscador {
         return data;
     }
 
-    private calcularPontuacoes(site_html : string, searched_term : string)  {// : ScoreObject
+    private calcularAutoreferencia(pagina : Pagina, scores : ScoreObject){
 
-        let scores : ScoreObject = {"h1":15,"h2":10,"p":5,"a":2,"autoridade":20,"autoreferencia":-20,"fresco":30,"velho":-5}
-        this.calcularUsoDeTags(site_html,searched_term,scores);
-        this.calcularFrescor(site_html,searched_term,scores);
-        console.log(scores);
+        const link : string = pagina.link;
+        const html : string = pagina.content;
+        const DOM = parse(html);
+        const as = DOM.querySelectorAll("a");
+        let autoreferencias : number = 0;
+        console.log("To em cima do for")
+        for(let a of as){
+            const href :string = a.getAttribute("href") || "";
+            console.log("O href é "+href);
+            if(this.indexador.takeLastElement(link) == href){
+                autoreferencias++;
+            }
+        }
+        console.log("Numero de autoreferencias: "+autoreferencias);
+        scores.autoreferencia = autoreferencias * scores.autoreferencia;
     }
-
-    
 
     private contarOcorrenciasSubstring(str: string, substr: string){
         return str.split(substr).length - 1;
