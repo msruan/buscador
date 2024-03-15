@@ -40,21 +40,24 @@ const Buscador_1 = require("./Buscador");
 const Indexador_1 = require("./Indexador");
 const fs = __importStar(require("fs"));
 const express_1 = __importDefault(require("express"));
-const path_1 = __importDefault(require("path"));
+const cors_1 = __importDefault(require("cors"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         let indexador = new Indexador_1.Indexador();
         // await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
         let google = new Buscador_1.Buscador(indexador);
-        console.log(yield google.main());
         // console.log(listarArquivosDoDiretorio('../sites'));
         const app = (0, express_1.default)();
         // Define o diretório onde os arquivos estáticos (como HTML, CSS, imagens, etc.) serão servidos
-        app.use(express_1.default.static(path_1.default.join(__dirname, '../google')));
+        //app.use(express.static(path.join(__dirname, '../google')));
+        app.use(express_1.default.json());
+        app.use((0, cors_1.default)());
         // Define a rota principal para enviar o arquivo HTML
-        app.get('/', (req, res) => {
-            res.sendFile(path_1.default.join(__dirname, '../google', 'index.html'));
-        });
+        app.get('/search/:value', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const input = req.params.value;
+            const array = yield google.main(input);
+            res.json(array);
+        }));
         // Inicia o servidor na porta 3000
         app.listen(3000, () => {
             console.log('Servidor Express iniciado na porta 3000');

@@ -36,30 +36,16 @@ exports.Buscador = void 0;
 const Pagina_1 = require("./Pagina");
 const node_html_parser_1 = require("node-html-parser");
 const fs = __importStar(require("fs"));
+const jsonfile = __importStar(require("jsonfile"));
 class Buscador {
     constructor(indexador) {
         this.indexador = indexador;
     }
-    pesquisa(termo_procurado) {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
-    }
-    main() {
+    main(searched_term) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
             const home = "../sites/matrix.html"; //question("Digite o nome da página inicial: ");
             let home_text = fs.readFileSync(home, 'utf8');
-            const searched_term = "matriz";
-            const pontuacoes = {
-                "h1": +15,
-                "h2": +10,
-                "p": +5,
-                "a": +2,
-                "autoridade": +20,
-                "autoreferencia": -20,
-                "fresco": +30,
-                "velho": -5,
-            };
             // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
             // const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
             const paginas = this.indexador.paginasBaixadas;
@@ -74,7 +60,7 @@ class Buscador {
     }
     calcularPontuacoes(pagina, searched_term) {
         const html = pagina.content;
-        let scores = { "h1": 15, "h2": 10, "p": 5, "a": 2, "autoridade": 20, "autoreferencia": -20, "fresco": 30, "velho": -5 };
+        let scores = jsonfile.readFileSync('../scores.json');
         this.calcularUsoDeTags(html, searched_term, scores);
         this.calcularFrescor(html, scores);
         this.calcularAutoreferencia(pagina, scores);
@@ -171,3 +157,14 @@ class Buscador {
     }
 }
 exports.Buscador = Buscador;
+/*const pontuacoes = {
+            "h1" : +15,
+            "h2" : +10,
+            "p" : +5,
+            "a" : +2,
+        
+            "autoridade" : +20,
+            "autoreferencia" : -20,
+            "fresco" : +30,
+            "velho" : -5,
+        } */ 
