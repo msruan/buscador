@@ -1,12 +1,5 @@
 document.addEventListener('DOMContentLoaded', main)
 
-function handleEnterDown(e) {
-    window.KeyboardEvent()
-    const buttonElement = document.getElementById('search')
-
-    buttonElement.click()
-}
-
 async function searchByInput(value) {
 
         // console.log(value)
@@ -21,7 +14,7 @@ function main () {
     const buttonElement = document.getElementById('searchButton')
 
     buttonElement.addEventListener('click', () => searchByInput(inputElement[0].value)) 
-    // inputElement[0].addEventListener('keypress', (e) => {
-    //     if (e.keycode === 13) {searchByInput(inputElement[0].value)} 
-    // })
+    inputElement.addEventListener('keypress', (e) => {
+        if (e.keycode === 13) 
+    })
 }

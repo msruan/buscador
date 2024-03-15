@@ -1,11 +1,6 @@
 document.addEventListener('DOMContentLoaded', main)
 
-function handleEnterDown(e) {
-    window.KeyboardEvent()
-    const buttonElement = document.getElementById('search')
-
-    buttonElement.click()
-}
+handleEnterDown*()
 
 async function searchByInput(value) {
 

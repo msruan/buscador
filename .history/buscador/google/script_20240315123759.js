@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', main)
 
 function handleEnterDown(e) {
-    window.KeyboardEvent()
+    window.key[
     const buttonElement = document.getElementById('search')
 
     buttonElement.click()
