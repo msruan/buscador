@@ -1,0 +1,111 @@
+* {
+    font-family: 'arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+section {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+section header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 4%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.1%;
+    background: #3a3939;
+    box-shadow: 0px 1px 5px 1px rgb(202, 202, 206);
+    color: rgb(202, 198, 198);
+}
+
+section header ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section header ul li {
+    list-style: none;
+    font-weight: bold;
+    font-size: 15px;
+    
+}
+
+section .main {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+section .main .caixaDePesquisa {
+    position: relative;
+    width: 100%;
+    margin-top: 25px;
+}
+
+section .main .caixaDePesquisa .search {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 15px;
+    font-size: 17px;
+    outline: none;
+    border: 1px solid grey;
+    box-shadow: 0px 1px 5px 1px rgb(202, 202, 206);
+}
+
+button {
+    padding: 7px;
+    background-image: linear-gradient(rgb(243, 237, 237),#d6cfcf);
+    border-color: #d4cdcd;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.main img {
+    max-width: 300px;
+    width: auto;
+    height: auto;
+}
+
+.main .nomes ul{
+   display: flex;
+   margin-top: 100px;
+
+   li {
+        margin-right: 7px;
+        list-style: none;
+
+        a {
+            text-decoration: none;
+            color: rgb(18, 84, 172);
+    }
+   }
+}
+
+.footer {
+    display: flex;
+    margin-top: 200px;
+    
+    h3 {
+        margin-right: 9px;
+        font-size: 15px;
+        font-weight: lighter;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 15px;
+        color: rgb(18, 84, 172);
+    }
+}
