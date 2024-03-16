@@ -4,6 +4,7 @@ import { Indexador } from "./Indexador";
 import express from 'express';
 import cors from 'cors';
 import { PaginaScore } from "./PaginaScore";
+import { Pagina } from "./Pagina";
 
 async function main(){
 
@@ -11,9 +12,18 @@ async function main(){
     await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
     indexador.carregarPaginasBaixadas();
     let google : Buscador = new Buscador(indexador);
-    const scores : Promise<PaginaScore[]> = google.busca('blade')
-    const scoreTotalPorPagina : {} = google.calcularPontosTotais(await scores)
-   
+    const scores : PaginaScore[] = await google.busca('matrix');
+
+    scores.forEach ( (paginaScore) => {console.log("Pontos totais da página "+paginaScore.pagina.title
+            +": " + paginaScore.score.calcularPontosTotais())
+            console.log("Pontuação detalhada: "+paginaScore.score.toString());
+        })
+
+    const scoreTotalPorPagina : Pagina[] = google.ordenarSites(await scores)
+    for(let site of scoreTotalPorPagina){
+        console.log(site.title)
+    }
+    
     const app = express();
 
     // Define o diretório onde os arquivos estáticos (como HTML, CSS, imagens, etc.) serão servidos

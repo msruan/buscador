@@ -33,6 +33,24 @@ class Score {
         this.autoreferencia = default_scores.autoreferencia;
         this.fresco = default_scores.fresco;
         this.velho = default_scores.velho;
+        this.frequencia = default_scores.frequencia;
+    }
+    calcularPontosTotais() {
+        const somaPontuacao = this.a + this.autoreferencia + this.autoridade
+            + this.fresco + this.h1 + this.h2 + this.p + this.frequencia;
+        return somaPontuacao;
+    }
+    toString() {
+        return `
+            frequencia = ${this.frequencia};
+            h1 = ${this.h1};
+            h2 = ${this.h2};
+            p = ${this.p};
+            a = ${this.a};
+            autoridade = ${this.autoridade};
+            autoreferencia = ${this.autoreferencia};
+            frescor = ${this.fresco};
+        `;
     }
 }
 exports.Score = Score;
@@ -41,7 +59,7 @@ exports.Score = Score;
             "h2" : +10,
             "p" : +5,
             "a" : +2,
-        
+
             "autoridade" : +20,
             "autoreferencia" : -20,
             "fresco" : +30,

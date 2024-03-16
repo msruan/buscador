@@ -1,7 +1,8 @@
 import * as jsonfile from 'jsonfile'
 
 export class Score {
-     
+
+    frequencia: number;
     h1: number;
     h2: number;
     p: number;
@@ -22,6 +23,27 @@ export class Score {
         this.autoreferencia = default_scores.autoreferencia;
         this.fresco = default_scores.fresco;
         this.velho = default_scores.velho;
+        this.frequencia = default_scores.frequencia;
+    }
+
+    public calcularPontosTotais() :number {
+
+        const somaPontuacao = this.a + this.autoreferencia + this.autoridade
+            + this.fresco + this.h1 + this.h2 + this.p + this.frequencia;
+        return somaPontuacao;
+    }
+
+    public toString() : string{
+        return `
+            frequencia = ${this.frequencia};
+            h1 = ${this.h1};
+            h2 = ${this.h2};
+            p = ${this.p};
+            a = ${this.a};
+            autoridade = ${this.autoridade};
+            autoreferencia = ${this.autoreferencia};
+            frescor = ${this.fresco};
+        `;
     }
 }
 
@@ -30,11 +52,11 @@ export class Score {
             "h2" : +10,
             "p" : +5,
             "a" : +2,
-        
+
             "autoridade" : +20,
             "autoreferencia" : -20,
             "fresco" : +30,
             "velho" : -5,
         } */
 // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
-        // const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
+// const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');

@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -30,33 +11,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Buscador = void 0;
 const node_html_parser_1 = require("node-html-parser");
-const jsonfile = __importStar(require("jsonfile"));
 const PaginaScore_1 = require("./PaginaScore");
+const Score_1 = require("./Score");
 const utils_1 = require("./utils");
 class Buscador {
     constructor(indexador) {
         this.indexador = indexador;
     }
-    calcularPontosTotais(paginasScores) {
-        const scoreDeCadaPagina = {};
-        for (let paginaScore of paginasScores) {
-            const score = paginaScore.score;
-            const somaPontuacao = score.a + score.autoreferencia + score.autoridade + score.fresco + score.h1 + score.h2 + score.p + score.velho;
-            scoreDeCadaPagina[paginaScore.pagina.link] = somaPontuacao;
-        }
-        for (let [pagina, pontos] of Object.entries(scoreDeCadaPagina)) {
-            console.log(`Site ${pagina} tem ${pontos} pontos`); // so pra ver se ta saindo ok
-        }
-        return scoreDeCadaPagina;
-    }
-    ordenarSites(pontuacao) {
-        const sitesOrdenados = [];
-        const pontuacaoDeCadaSite = Object.entries(pontuacao);
-        pontuacaoDeCadaSite.sort((a, b) => b[1] - a[1]);
-        for (let [pagina, pontos] of pontuacaoDeCadaSite) {
-            sitesOrdenados.push(pagina);
-        }
-        return sitesOrdenados;
+    ordenarSites(paginasScores) {
+        paginasScores.sort((a, b) => {
+            const somaPontuacao_a = a.score.calcularPontosTotais();
+            const somaPontuacao_b = b.score.calcularPontosTotais();
+            if (somaPontuacao_a == somaPontuacao_b) {
+                return 0;
+            }
+            else if (somaPontuacao_a < somaPontuacao_b) {
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        });
+        const paginasOrdenadas = [];
+        paginasScores.forEach((paginaScore) => { paginasOrdenadas.push(paginaScore.pagina); });
+        return paginasOrdenadas;
     }
     busca(searched_term) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -73,12 +51,17 @@ class Buscador {
     calcularPontuacoes(pagina, searched_term) {
         const paginas = this.indexador.paginasBaixadas;
         const html = pagina.content;
-        let scores = jsonfile.readFileSync('../scores.json');
-        this.calcularUsoDeTags(html, searched_term, scores);
-        this.calcularFrescor(html, scores);
-        this.calcularAutoreferencia(pagina, scores);
-        this.calcularAutoridade(pagina, paginas, scores);
-        return scores;
+        let score = new Score_1.Score();
+        this.calcularFrequenciaDeTermo(html, searched_term, score);
+        this.calcularUsoDeTags(html, searched_term, score);
+        this.calcularFrescor(html, score);
+        this.calcularAutoreferencia(pagina, score);
+        this.calcularAutoridade(pagina, paginas, score);
+        return score;
+    }
+    calcularFrequenciaDeTermo(html, searched_term, scores) {
+        const ocorrencias = (0, utils_1.contarOcorrenciasSubstring)(html.toUpperCase(), searched_term.toUpperCase());
+        scores.frequencia = ocorrencias * scores.frequencia;
     }
     calcularUsoDeTags(html, searched_term, scores) {
         const DOOM = (0, node_html_parser_1.parse)(html);
@@ -125,11 +108,8 @@ class Buscador {
                 const data_str = splited[last_index];
                 const data = (0, utils_1.devolverData)(data_str);
                 const diferencaDeAnos = new Date().getFullYear() - data.getFullYear();
-                if (diferencaDeAnos == 0)
-                    scores.velho = 0;
-                else {
-                    scores.fresco = 0;
-                    scores.velho = diferencaDeAnos * scores.velho;
+                if (diferencaDeAnos != 0) {
+                    scores.fresco = scores.fresco + (diferencaDeAnos * scores.velho);
                 }
             }
         }

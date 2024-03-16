@@ -16,34 +16,27 @@ export class Buscador {
         this.indexador = indexador;
     }
 
-    public calcularPontosTotais(paginasScores: PaginaScore[]): { [pagina: string]: number } {
-        const scoreDeCadaPagina: { [pagina: string]: number } = {};
-    
-        for (let paginaScore of paginasScores) {
-            const score = paginaScore.score;
-            const somaPontuacao = score.a + score.autoreferencia + score.autoridade + score.fresco + score.h1 + score.h2 + score.p + score.velho;
-            scoreDeCadaPagina[paginaScore.pagina.link] = somaPontuacao;
-        }
-    
-        for (let [pagina, pontos] of Object.entries(scoreDeCadaPagina)) {
-            console.log(`Site ${pagina} tem ${pontos} pontos`); // so pra ver se ta saindo ok
-        }
-        
-        return scoreDeCadaPagina
-    }
-    
-    public ordenarSites(pontuacao: { [pagina: string]: number }): string[] {
-        const sitesOrdenados: string[] = [];
-    
-        const pontuacaoDeCadaSite: [string, number][] = Object.entries(pontuacao);
-    
-        pontuacaoDeCadaSite.sort((a, b) => b[1] - a[1]);
+    public ordenarSites(paginasScores: PaginaScore[]): Pagina[] {
 
-        for (let [pagina, pontos] of pontuacaoDeCadaSite) {
-            sitesOrdenados.push(pagina);
-        }
+        paginasScores.sort( (a,b) => {
+            const somaPontuacao_a = a.score.calcularPontosTotais();
+            const somaPontuacao_b = b.score.calcularPontosTotais();
 
-        return sitesOrdenados;
+            if(somaPontuacao_a == somaPontuacao_b){
+                return 0;
+            }
+            else if(somaPontuacao_a < somaPontuacao_b){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+        } );
+
+        const paginasOrdenadas : Pagina[] = [];
+        paginasScores.forEach((paginaScore) => {paginasOrdenadas.push(paginaScore.pagina)});
+
+        return paginasOrdenadas;
     }
     
     public async busca(searched_term : string) : Promise<PaginaScore[]>{
@@ -62,12 +55,19 @@ export class Buscador {
     private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {// : ScoreObject
         const paginas : Pagina[] = this.indexador.paginasBaixadas;
         const html : string = pagina.content
-        let scores : Score = jsonfile.readFileSync('../scores.json');
-        this.calcularUsoDeTags(html,searched_term,scores);
-        this.calcularFrescor(html,scores);
-        this.calcularAutoreferencia(pagina,scores);
-        this.calcularAutoridade(pagina,paginas,scores)
-        return scores;
+        let score : Score  = new Score();
+        this.calcularFrequenciaDeTermo(html,searched_term,score)
+        this.calcularUsoDeTags(html,searched_term,score);
+        this.calcularFrescor(html,score);
+        this.calcularAutoreferencia(pagina,score);
+        this.calcularAutoridade(pagina,paginas,score)
+        return score;
+    }
+
+    private calcularFrequenciaDeTermo(html : string, searched_term : string, scores : Score) : void{
+
+        const ocorrencias = contarOcorrenciasSubstring(html.toUpperCase() ,searched_term.toUpperCase());
+        scores.frequencia = ocorrencias * scores.frequencia;
     }
 
     private calcularUsoDeTags(html : string, searched_term : string, scores : Score){
@@ -128,11 +128,8 @@ export class Buscador {
                 const data_str : string = splited[last_index];
                 const data : Date = devolverData(data_str);
                 const diferencaDeAnos : number = new Date().getFullYear() - data.getFullYear();
-                if(diferencaDeAnos == 0)
-                    scores.velho = 0;
-                else {
-                    scores.fresco = 0;
-                    scores.velho = diferencaDeAnos * scores.velho;
+                if(diferencaDeAnos != 0){
+                    scores.fresco = scores.fresco + (diferencaDeAnos * scores.velho);
                 }
             }
         }
