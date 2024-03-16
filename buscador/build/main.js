@@ -52,6 +52,9 @@ function main() {
         //app.use(express.static(path.join(__dirname, '../google')));
         app.use(express_1.default.json());
         app.use((0, cors_1.default)());
+        app.get('/', (req, res) => {
+            res.send('Servidor Node.js está rodando!');
+        });
         // Define a rota principal para enviar o arquivo HTML
         app.get('/search/:value', (req, res) => __awaiter(this, void 0, void 0, function* () {
             const input = req.params.value;
