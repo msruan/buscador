@@ -1,18 +1,15 @@
 import { Buscador } from "./Buscador";
 import { Indexador } from "./Indexador";
-import * as fs from "fs"
 
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 
 async function main(){
+
     let indexador : Indexador = new Indexador();
-    // await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
+    await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
+    indexador.carregarPaginasBaixadas();
     let google : Buscador = new Buscador(indexador);
-
-    // console.log(listarArquivosDoDiretorio('../sites'));
-
 
     const app = express();
 
@@ -20,15 +17,16 @@ async function main(){
     //app.use(express.static(path.join(__dirname, '../google')));
     app.use(express.json()) 
     app.use(cors())
+
+    // Define a rota principal (localhost:300)
     app.get('/', (req, res) => {
         res.send('Servidor Node.js está rodando!')
     });
 
-
-    // Define a rota principal para enviar o arquivo HTML
+    //Define a rota a partir da qual será chamada a página de resultados
     app.get('/search/:value', async (req, res) => {
         const input = req.params.value
-        const array =  await google.main(input)
+        const array =  await google.busca(input)
 
         res.json(array)
     });
@@ -39,17 +37,4 @@ async function main(){
     });
 }
 
-
-export function listarArquivosDoDiretorio(diretorio : string) : string[]{
-
-    const arquivos : string[] = [];
-    let listaDeArquivos = fs.readdirSync(diretorio);
-    for(let k in listaDeArquivos) {
-        arquivos.push(listaDeArquivos[k]);
-    }
-    return arquivos;
-
-
-// downloadPages("https://msruan.github.io/samples/matrix.html");   
-}
 main();

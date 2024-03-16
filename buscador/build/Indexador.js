@@ -31,101 +31,64 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Indexador = void 0;
-const node_fetch_1 = __importDefault(require("node-fetch"));
 const node_html_parser_1 = require("node-html-parser");
 const fs = __importStar(require("fs"));
 const Pagina_1 = require("./Pagina");
+const utils_1 = require("./utils");
 class Indexador {
     constructor() {
         this._paginasBaixadas = [];
+        this._dirPaginasBaixadas = '../sites/';
         this.carregarPaginasBaixadas();
     }
     get paginasBaixadas() {
         return this._paginasBaixadas;
     }
-    readWebPageHTML(url) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield (0, node_fetch_1.default)(url);
-            const html = yield response.text();
-            return html;
-        });
-    }
     carregarPaginasBaixadas() {
-        const nomeDasPaginasBaixadas = this.listarArquivosDoDiretorio('../sites');
-        // console.log(nomeDasPaginasBaixadas)
-        for (let nome of nomeDasPaginasBaixadas) {
-            const conteudo = fs.readFileSync(`../sites/${nome}`).toString();
-            const pagina = new Pagina_1.Pagina(nome, conteudo);
-            this.paginasBaixadas.push(pagina);
+        if (this.paginasBaixadas.length == 0) {
+            const nomeDasPaginasBaixadas = (0, utils_1.listarArquivosDoDiretorio)(this._dirPaginasBaixadas);
+            if (nomeDasPaginasBaixadas.length > 0) { //@Todo: substituir por uma exceção 'NotFound' posteriormente
+                for (let nome of nomeDasPaginasBaixadas) {
+                    const conteudo = fs.readFileSync(`${this._dirPaginasBaixadas}${nome}`).toString();
+                    const pagina = new Pagina_1.Pagina(nome, conteudo);
+                    this.paginasBaixadas.push(pagina);
+                }
+            }
         }
     }
     downloadPages(url) {
         return __awaiter(this, void 0, void 0, function* () {
-            const file_name = this.takeLastElement(url);
-            if (this.jaVisiteiEssaPagina(file_name)) {
+            const file_name = (0, utils_1.takeLastElement)(url);
+            if (this.jaBaixeiEssaPagina(file_name)) {
                 return;
             }
-            // console.log("Adicionei o site ",file_name, " pq atualmente os visitados sao ",visitedLinks)
-            // const file_name : string = url;
-            const text = yield this.readWebPageHTML(url);
+            const text = yield (0, utils_1.readWebPageHTML)(url);
             this.downloadPage(text, file_name);
             const DOM = (0, node_html_parser_1.parse)(text);
             const links = DOM.querySelectorAll("a");
             for (let a of links) {
                 let href = a.getAttribute("href") || "";
-                let page_name = this.takeLastElement(href);
-                href = this.trasnformarURLRelativaEmNormal(url, page_name);
-                // console.log(href);
+                let page_name = (0, utils_1.takeLastElement)(href);
+                href = (0, utils_1.trasnformarURLRelativaEmNormal)(url, page_name);
                 yield this.downloadPages(href);
             }
-            // console.log("Indexador diz: páginas baixadas!")
+            console.log("Indexador diz: páginas baixadas!");
         });
     }
     downloadPage(text, page_name) {
-        const sites_dir = '../sites'; //@Todo: dá pra melhorar ess lógica, usando funções pra pegar o diretório atual por exemplo
-        if (!fs.existsSync(sites_dir)) {
-            fs.mkdirSync(sites_dir, { recursive: true });
+        //@Todo: alterar essa lógica para conferir noa rray?
+        if (!fs.existsSync(this._dirPaginasBaixadas)) {
+            fs.mkdirSync(this._dirPaginasBaixadas, { recursive: true });
         }
-        fs.writeFileSync(`../sites/${page_name}`, text);
+        fs.writeFileSync(`${this._dirPaginasBaixadas}${page_name}`, text);
     }
-    jaVisiteiEssaPagina(file_name) {
-        const sites_dir = '../sites'; //@Todo: dá pra melhorar ess lógica, usando funções pra pegar o diretório atual por exemplo
-        if (!fs.existsSync(sites_dir)) {
+    jaBaixeiEssaPagina(file_name) {
+        if (!fs.existsSync(this._dirPaginasBaixadas)) {
             return false;
         }
-        return fs.existsSync(`../sites/${file_name}`);
-    }
-    takeLastElement(url) {
-        const elements = url.split("/");
-        const lastIndex = elements.length - 1;
-        return elements[lastIndex];
-    }
-    trasnformarURLRelativaEmNormal(urlPaginaInicial, urlRelativa) {
-        const urlQuebrada = urlPaginaInicial.split("/");
-        // for(let parte of urlQuebrada){
-        //     console.log(parte);
-        // }
-        const numeroDeDiretoriosAVoltar = this.contarOcorrenciasSubstring(urlPaginaInicial, '..');
-        const lastIndex = urlQuebrada.length - 1 - numeroDeDiretoriosAVoltar;
-        urlQuebrada[lastIndex] = urlRelativa;
-        return urlQuebrada.join("/");
-    }
-    contarOcorrenciasSubstring(str, substr) {
-        return str.split(substr).length - 1;
-    }
-    listarArquivosDoDiretorio(diretorio) {
-        const arquivos = [];
-        let listaDeArquivos = fs.readdirSync(diretorio);
-        for (let k in listaDeArquivos) {
-            arquivos.push(listaDeArquivos[k]);
-        }
-        return arquivos;
-        // downloadPages("https://msruan.github.io/samples/matrix.html");   
+        return fs.existsSync(`${this._dirPaginasBaixadas}${file_name}`);
     }
 }
 exports.Indexador = Indexador;

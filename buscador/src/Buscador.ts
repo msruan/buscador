@@ -1,15 +1,13 @@
-import { Pagina, PaginaScore } from "./Pagina";
-import { link } from "fs";
-import {question} from 'readline-sync'
-import fetch from 'node-fetch'
 import {parse} from 'node-html-parser'
-import * as fs from 'fs'
 import * as jsonfile from 'jsonfile'
 import {Indexador } from "./Indexador";
-import { listarArquivosDoDiretorio } from "./main";
+
+import { Pagina } from "./Pagina";
+import { PaginaScore } from './PaginaScore';
+import { Score } from './Score';
+import { contarOcorrenciasSubstring, devolverData, takeLastElement } from "./utils";
 
 export class Buscador {
-    // private paginas : Pagina[];
 
     private indexador : Indexador
 
@@ -17,47 +15,37 @@ export class Buscador {
         this.indexador = indexador;
     }
 
-    async main(searched_term : string) : Promise<PaginaScore[]>{
-
-
-        await this.indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
-        const home : string = "../sites/matrix.html"//question("Digite o nome da página inicial: ");
-        let home_text = fs.readFileSync(home, 'utf8');
-
-        // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
-        // const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
+    public async busca(searched_term : string) : Promise<PaginaScore[]>{
 
         const paginas : Pagina[] = this.indexador.paginasBaixadas;
         const paginasScores : PaginaScore[] = [];
 
         for(let pagina of paginas){
-            const score : ScoreObject = this.calcularPontuacoes(pagina,searched_term);
+            const score : Score = this.calcularPontuacoes(pagina,searched_term);
             const paginaScore : PaginaScore = new PaginaScore(pagina,score);
             paginasScores.push(paginaScore);
         }
         return paginasScores;
     }
 
-    private calcularPontuacoes(pagina : Pagina, searched_term : string) : ScoreObject {// : ScoreObject
+    private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {// : ScoreObject
 
         const html : string = pagina.content
-        let scores : ScoreObject = jsonfile.readFileSync('../scores.json');
+        let scores : Score = jsonfile.readFileSync('../scores.json');
         this.calcularUsoDeTags(html,searched_term,scores);
         this.calcularFrescor(html,scores);
         this.calcularAutoreferencia(pagina,scores);
-        // console.log(scores);
         return scores;
     }
 
-    private calcularUsoDeTags(html : string, searched_term : string, scores : ScoreObject){
+    private calcularUsoDeTags(html : string, searched_term : string, scores : Score){
     
         const DOOM = parse(html);
-        // console.log("É "+DOOM.id);
         const h1s = DOOM.querySelectorAll("h1");
         const h2s = DOOM.querySelectorAll("h2");
         const ps = DOOM.querySelectorAll("p");
-        // console.log("O numero de ocorrencias em p é ",ps.length)
         const as = DOOM.querySelectorAll("a");
+
         let h1s_ocorrencias : number = 0;
         let h2s_ocorrencias : number = 0;
         let ps_ocorrencias : number = 0;
@@ -65,23 +53,28 @@ export class Buscador {
 
         for(let h1 of h1s){
             
-            if(h1.text.toUpperCase().includes(searched_term.toUpperCase())){
-                h1s_ocorrencias += this.contarOcorrenciasSubstring(h1.text.toUpperCase(),searched_term.toUpperCase());
+            if(h1.text.toUpperCase().includes(searched_term.toUpperCase())){//@Todo: substituir por um reduce todos esses fors 
+                h1s_ocorrencias += contarOcorrenciasSubstring(h1.text.toUpperCase(),searched_term.toUpperCase());
             }
         }
+        
         for(let h2 of h2s){
+
             if(h2.text.toUpperCase().includes(searched_term.toUpperCase())){
-                h2s_ocorrencias += this.contarOcorrenciasSubstring(h2.text.toUpperCase(),searched_term.toUpperCase());
+                h2s_ocorrencias += contarOcorrenciasSubstring(h2.text.toUpperCase(),searched_term.toUpperCase());
             }
+
         }
+
         for(let p of ps){
+
             if(p.text.toUpperCase().includes(searched_term.toUpperCase())){
-                ps_ocorrencias += this.contarOcorrenciasSubstring(p.text.toUpperCase(),searched_term.toUpperCase());
+                ps_ocorrencias += contarOcorrenciasSubstring(p.text.toUpperCase(),searched_term.toUpperCase());
             }
         }
         for(let a of as){
             if(a.text.toUpperCase().includes(searched_term.toUpperCase())){
-                as_ocorrencias += this.contarOcorrenciasSubstring(a.text.toUpperCase(),searched_term.toUpperCase());
+                as_ocorrencias += contarOcorrenciasSubstring(a.text.toUpperCase(),searched_term.toUpperCase());
             }
         }
 
@@ -91,18 +84,18 @@ export class Buscador {
         scores.a = scores.a * as_ocorrencias;
     }
 
-    private calcularFrescor(html : string, scores : ScoreObject){
+    private calcularFrescor(html : string, scores : Score){
+
         const DOOM = parse(html);
         const ps = DOOM.querySelectorAll("p");
+
         for(let p of ps){
             if(p.text.toUpperCase().startsWith("Data".toUpperCase())){
                 let splited : string[] = p.text.split(" ");
-                const last_index = splited.length - 1;
+                const last_index = splited.length - 1;//Porque a data sempre é a última palavra em frases como "Data de publicação: 12/02/1960"
                 const data_str : string = splited[last_index];
-                const data : Date = this.devolverData(data_str);
-                // console.log("A data é "+data);
-                // console.log("A data atual é "+new Date());
-                const diferencaDeAnos : number = new Date().getFullYear()-data.getFullYear();
+                const data : Date = devolverData(data_str);
+                const diferencaDeAnos : number = new Date().getFullYear() - data.getFullYear();
                 if(diferencaDeAnos == 0)
                     scores.velho = 0;
                 else {
@@ -113,33 +106,21 @@ export class Buscador {
         }
     }
 
-    private devolverData(str_data: string) : Date {
-        var partesData = str_data.split("/").map(parseFloat);
-        var data : Date = new Date(partesData[2], partesData[1] - 1, partesData[0]);
-        return data;
-    }
-
-    private calcularAutoreferencia(pagina : Pagina, scores : ScoreObject){
+    private calcularAutoreferencia(pagina : Pagina, scores : Score){
 
         const link : string = pagina.link;
         const html : string = pagina.content;
         const DOM = parse(html);
         const as = DOM.querySelectorAll("a");
         let autoreferencias : number = 0;
-        // console.log("To em cima do for")
+
         for(let a of as){
             const href :string = a.getAttribute("href") || "";
-            if(this.indexador.takeLastElement(link) == href){
+            if(takeLastElement(link) == href){
                 autoreferencias++;
             }
         }
         scores.autoreferencia = autoreferencias * scores.autoreferencia;
-    }
-
-    
-
-    private contarOcorrenciasSubstring(str: string, substr: string){
-        return str.split(substr).length - 1;
     }
 
     private calcularAutoridade(paginaACalcular : Pagina, paginas : Pagina[]){
@@ -150,25 +131,3 @@ export class Buscador {
         paginas.forEach((pagina)=>nomesDasPaginas.push(pagina.link));
     }
 }
-
-type ScoreObject = {
-    h1: number;
-    h2: number;
-    p: number;
-    a: number;
-    autoridade: number;
-    autoreferencia: number;
-    fresco: number;
-    velho: number;
-};
-/*const pontuacoes = {
-            "h1" : +15,
-            "h2" : +10,
-            "p" : +5,
-            "a" : +2,
-        
-            "autoridade" : +20,
-            "autoreferencia" : -20,
-            "fresco" : +30,
-            "velho" : -5,
-        } */

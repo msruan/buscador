@@ -2,10 +2,12 @@ import fetch from 'node-fetch'
 import {parse} from 'node-html-parser'
 import * as fs from 'fs';
 import { Pagina } from './Pagina';
+import { contarOcorrenciasSubstring, listarArquivosDoDiretorio, readWebPageHTML, takeLastElement, trasnformarURLRelativaEmNormal } from './utils';
 
 export class Indexador {
 
     private _paginasBaixadas : Pagina[] = [];
+    private _dirPaginasBaixadas : string = '../sites/';
 
     constructor(){
         this.carregarPaginasBaixadas();
@@ -15,35 +17,31 @@ export class Indexador {
         return this._paginasBaixadas;
     }
 
-    
-
-    private async readWebPageHTML(url : string) : Promise<string>{
-
-        const response =  await fetch(url);
-        const html : string = await response.text();
-        return html;
-    }
-
     public carregarPaginasBaixadas(){
-        const nomeDasPaginasBaixadas : string[] = this.listarArquivosDoDiretorio('../sites');
-        // console.log(nomeDasPaginasBaixadas)
-        for(let nome of nomeDasPaginasBaixadas){
-            const conteudo : string = fs.readFileSync(`../sites/${nome}`).toString();
-            const pagina : Pagina = new Pagina(nome,conteudo);
-            this.paginasBaixadas.push(pagina);
+
+        if(this.paginasBaixadas.length == 0){
+
+            const nomeDasPaginasBaixadas : string[] = listarArquivosDoDiretorio(this._dirPaginasBaixadas);
+
+            if(nomeDasPaginasBaixadas.length > 0){//@Todo: substituir por uma exceção 'NotFound' posteriormente
+
+                for(let nome of nomeDasPaginasBaixadas){
+
+                    const conteudo : string = fs.readFileSync(`${this._dirPaginasBaixadas}${nome}`).toString();
+                    const pagina : Pagina = new Pagina(nome,conteudo);
+                    this.paginasBaixadas.push(pagina);
+                }
+            }
         }
     }
 
     public async downloadPages(url : string) : Promise<void>{
 
-        const file_name = this.takeLastElement(url)
-        if(this.jaVisiteiEssaPagina(file_name)){
+        const file_name = takeLastElement(url)
+        if(this.jaBaixeiEssaPagina(file_name)){
             return;
         }
-        // console.log("Adicionei o site ",file_name, " pq atualmente os visitados sao ",visitedLinks)
-        // const file_name : string = url;
-        const text : string = await this.readWebPageHTML(url);
-        
+        const text : string = await readWebPageHTML(url);
 
         this.downloadPage(text,file_name);
 
@@ -53,65 +51,27 @@ export class Indexador {
         for(let a of links){
 
             let href : string = a.getAttribute("href") || "";
-            let page_name : string = this.takeLastElement(href);
-            href = this.trasnformarURLRelativaEmNormal(url,page_name);
-            // console.log(href);
+            let page_name : string = takeLastElement(href);
+            href = trasnformarURLRelativaEmNormal(url,page_name);
             await this.downloadPages(href);
         }
-        // console.log("Indexador diz: páginas baixadas!")
+        console.log("Indexador diz: páginas baixadas!")
     }
 
     private downloadPage(text: string, page_name : string) : void{
         
-        const sites_dir = '../sites';//@Todo: dá pra melhorar ess lógica, usando funções pra pegar o diretório atual por exemplo
-        if (!fs.existsSync(sites_dir)) {
-            fs.mkdirSync(sites_dir, { recursive: true });
+        //@Todo: alterar essa lógica para conferir noa rray?
+        if (!fs.existsSync(this._dirPaginasBaixadas)) {
+            fs.mkdirSync(this._dirPaginasBaixadas, { recursive: true });
         }
-        fs.writeFileSync(`../sites/${page_name}`,text);
+        fs.writeFileSync(`${this._dirPaginasBaixadas}${page_name}`,text);
     }
 
-    private jaVisiteiEssaPagina(file_name : string){
+    private jaBaixeiEssaPagina(file_name : string){
 
-        const sites_dir = '../sites';//@Todo: dá pra melhorar ess lógica, usando funções pra pegar o diretório atual por exemplo
-        if (!fs.existsSync(sites_dir)) {
+        if (!fs.existsSync(this._dirPaginasBaixadas)) {
             return false;
         }
-        return fs.existsSync(`../sites/${file_name}`);
-    }
-
-    public takeLastElement(url : string) : string{
-
-        const elements : string[] = url.split("/");
-        const lastIndex = elements.length-1;
-        return elements[lastIndex];
-    }
-
-    private trasnformarURLRelativaEmNormal(urlPaginaInicial : string, urlRelativa : string){
-
-        const urlQuebrada : string [] = urlPaginaInicial.split("/");
-        // for(let parte of urlQuebrada){
-        //     console.log(parte);
-        // }
-        const numeroDeDiretoriosAVoltar : number = this.contarOcorrenciasSubstring(urlPaginaInicial,'..');
-        const lastIndex : number = urlQuebrada.length - 1 - numeroDeDiretoriosAVoltar;
-        urlQuebrada[lastIndex] = urlRelativa;
-        return urlQuebrada.join("/");
-    }
-
-    private contarOcorrenciasSubstring(str : string, substr : string){
-        return str.split(substr).length - 1;
-    }
-
-    private listarArquivosDoDiretorio(diretorio : string) : string[]{
-
-        const arquivos : string[] = [];
-        let listaDeArquivos = fs.readdirSync(diretorio);
-        for(let k in listaDeArquivos) {
-            arquivos.push(listaDeArquivos[k]);
-        }
-        return arquivos;
-    
-    
-    // downloadPages("https://msruan.github.io/samples/matrix.html");   
+        return fs.existsSync(`${this._dirPaginasBaixadas}${file_name}`);
     }
 }
