@@ -1,11 +1,7 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -41,6 +37,27 @@ class Buscador {
     constructor(indexador) {
         this.indexador = indexador;
     }
+    calcularPontosTotais(paginasScores) {
+        const scoreDeCadaPagina = {};
+        for (let paginaScore of paginasScores) {
+            const score = paginaScore.score;
+            const somaPontuacao = score.a + score.autoreferencia + score.autoridade + score.fresco + score.h1 + score.h2 + score.p + score.velho;
+            scoreDeCadaPagina[paginaScore.pagina.link] = somaPontuacao;
+        }
+        for (let [pagina, pontos] of Object.entries(scoreDeCadaPagina)) {
+            console.log(`Site ${pagina} tem ${pontos} pontos`); // so pra ver se ta saindo ok
+        }
+        return scoreDeCadaPagina;
+    }
+    ordenarSites(pontuacao) {
+        const sitesOrdenados = [];
+        const pontuacaoDeCadaSite = Object.entries(pontuacao);
+        pontuacaoDeCadaSite.sort((a, b) => b[1] - a[1]);
+        for (let [pagina, pontos] of pontuacaoDeCadaSite) {
+            sitesOrdenados.push(pagina);
+        }
+        return sitesOrdenados;
+    }
     busca(searched_term) {
         return __awaiter(this, void 0, void 0, function* () {
             const paginas = this.indexador.paginasBaixadas;
@@ -54,11 +71,13 @@ class Buscador {
         });
     }
     calcularPontuacoes(pagina, searched_term) {
+        const paginas = this.indexador.paginasBaixadas;
         const html = pagina.content;
         let scores = jsonfile.readFileSync('../scores.json');
         this.calcularUsoDeTags(html, searched_term, scores);
         this.calcularFrescor(html, scores);
         this.calcularAutoreferencia(pagina, scores);
+        this.calcularAutoridade(pagina, paginas, scores);
         return scores;
     }
     calcularUsoDeTags(html, searched_term, scores) {
@@ -129,12 +148,30 @@ class Buscador {
         }
         scores.autoreferencia = autoreferencias * scores.autoreferencia;
     }
-    calcularAutoridade(paginaACalcular, paginas) {
-        const links = {
-            "matriz.html": 0
-        };
+    calcularAutoridade(paginaACalcular, paginas, scores) {
+        const links = {};
         const nomesDasPaginas = [];
-        paginas.forEach((pagina) => nomesDasPaginas.push(pagina.link));
+        for (let pagina of paginas) {
+            links[pagina.link] = 0;
+            nomesDasPaginas.push(pagina.link);
+        }
+        for (let pagina of paginas) {
+            const dom = (0, node_html_parser_1.parse)(pagina.content);
+            const as = dom.querySelectorAll('a');
+            for (let a of as) {
+                const href = a.getAttribute("href") || "";
+                if (nomesDasPaginas.includes(href)) {
+                    links[href] += 1;
+                }
+            }
+        }
+        let autoridade = 0;
+        for (let [string, number] of Object.entries(links)) {
+            if (string === paginaACalcular.link) {
+                autoridade = number;
+            }
+        }
+        scores.autoridade = scores.autoridade * autoridade;
     }
 }
 exports.Buscador = Buscador;

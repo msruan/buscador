@@ -6,6 +6,7 @@ import { Pagina } from "./Pagina";
 import { PaginaScore } from './PaginaScore';
 import { Score } from './Score';
 import { contarOcorrenciasSubstring, devolverData, takeLastElement } from "./utils";
+import { ObjectType } from 'typescript';
 
 export class Buscador {
 
@@ -15,6 +16,36 @@ export class Buscador {
         this.indexador = indexador;
     }
 
+    public calcularPontosTotais(paginasScores: PaginaScore[]): { [pagina: string]: number } {
+        const scoreDeCadaPagina: { [pagina: string]: number } = {};
+    
+        for (let paginaScore of paginasScores) {
+            const score = paginaScore.score;
+            const somaPontuacao = score.a + score.autoreferencia + score.autoridade + score.fresco + score.h1 + score.h2 + score.p + score.velho;
+            scoreDeCadaPagina[paginaScore.pagina.link] = somaPontuacao;
+        }
+    
+        for (let [pagina, pontos] of Object.entries(scoreDeCadaPagina)) {
+            console.log(`Site ${pagina} tem ${pontos} pontos`); // so pra ver se ta saindo ok
+        }
+        
+        return scoreDeCadaPagina
+    }
+    
+    public ordenarSites(pontuacao: { [pagina: string]: number }): string[] {
+        const sitesOrdenados: string[] = [];
+    
+        const pontuacaoDeCadaSite: [string, number][] = Object.entries(pontuacao);
+    
+        pontuacaoDeCadaSite.sort((a, b) => b[1] - a[1]);
+
+        for (let [pagina, pontos] of pontuacaoDeCadaSite) {
+            sitesOrdenados.push(pagina);
+        }
+
+        return sitesOrdenados;
+    }
+    
     public async busca(searched_term : string) : Promise<PaginaScore[]>{
 
         const paginas : Pagina[] = this.indexador.paginasBaixadas;
@@ -29,12 +60,13 @@ export class Buscador {
     }
 
     private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {// : ScoreObject
-
+        const paginas : Pagina[] = this.indexador.paginasBaixadas;
         const html : string = pagina.content
         let scores : Score = jsonfile.readFileSync('../scores.json');
         this.calcularUsoDeTags(html,searched_term,scores);
         this.calcularFrescor(html,scores);
         this.calcularAutoreferencia(pagina,scores);
+        this.calcularAutoridade(pagina,paginas,scores)
         return scores;
     }
 
@@ -123,11 +155,34 @@ export class Buscador {
         scores.autoreferencia = autoreferencias * scores.autoreferencia;
     }
 
-    private calcularAutoridade(paginaACalcular : Pagina, paginas : Pagina[]){
-        const links = {
-            "matriz.html" : 0
-        }
+    private calcularAutoridade(paginaACalcular : Pagina, paginas : Pagina[], scores : Score){
+        const links: Record<string,number> = {};
         const nomesDasPaginas : string [] = [];
-        paginas.forEach((pagina)=>nomesDasPaginas.push(pagina.link));
+
+        for(let pagina of paginas){
+            links[pagina.link] = 0;
+            nomesDasPaginas.push(pagina.link)
+        }
+
+        for(let pagina of paginas){
+            const dom = parse(pagina.content);
+            const as = dom.querySelectorAll('a')
+            
+            for(let a of as){
+                const href :string = a.getAttribute("href") || "";
+                if(nomesDasPaginas.includes(href)){
+                    links[href] += 1;
+                }
+            }
+        }
+        
+        let autoridade = 0;
+        for(let [string,number] of Object.entries(links)){
+        
+            if(string === paginaACalcular.link){
+                autoridade = number;  
+            }
+        }
+        scores.autoridade = scores.autoridade * autoridade
     }
 }

@@ -3,6 +3,7 @@ import { Indexador } from "./Indexador";
 
 import express from 'express';
 import cors from 'cors';
+import { PaginaScore } from "./PaginaScore";
 
 async function main(){
 
@@ -10,7 +11,9 @@ async function main(){
     await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
     indexador.carregarPaginasBaixadas();
     let google : Buscador = new Buscador(indexador);
-
+    const scores : Promise<PaginaScore[]> = google.busca('blade')
+    const scoreTotalPorPagina : {} = google.calcularPontosTotais(await scores)
+   
     const app = express();
 
     // Define o diretório onde os arquivos estáticos (como HTML, CSS, imagens, etc.) serão servidos
@@ -27,7 +30,7 @@ async function main(){
     app.get('/search/:value', async (req, res) => {
         const input = req.params.value
         const array =  await google.busca(input)
-
+        
         res.json(array)
     });
 
