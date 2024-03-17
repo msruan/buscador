@@ -1,5 +1,18 @@
 document.addEventListener("DOMContentLoaded", main);
 
+async function atualizarCamposFormulario(event) {
+  event.preventDefault();
+  console.log("Aconteceu alguma coisa?");
+  
+  const response = await fetch(`http://localhost:3000/atualizar-scores`);
+  const score = await response.json();
+
+  let campos = Object.keys(score)
+  for (campo in campos){ 
+      document.getElementById(campo).innerText = score[campo];
+  }
+};
+
 async function searchByInput(value) {
   const response = await fetch(`http://localhost:3000/search/${value}`);
   const html = await response.text();
@@ -25,11 +38,19 @@ function main() {
         searchByInput(valor)}
   );
   submitElement.addEventListener("click", (e) => atualizarJson(e));
+  // atualizarCamposFormulario(e);
 }
 
-// function atualizarCampo(novoValor, id) {
-//     console.log("valor do id: ",id )
-//     document.getElementById(`campo${id}`).innerText = novoValor;
+// async function atualizarCamposFormulario(event) {
+//   event.preventDefault();
+  
+//   const response = await fetch(`http://localhost:3000/atualizar-scores`);
+//   const score = await response.json();
+
+//   let campos = Object.keys(score)
+//   for (campo in campos){ 
+//       document.getElementById(campo).innerText = score.campo;
+//   }
 // }
 
 async function atualizarJson(event) {

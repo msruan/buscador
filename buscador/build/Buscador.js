@@ -45,7 +45,7 @@ class Buscador {
             }
             let paginasScoresOrdenadas = this.ordenarSites(paginasScores);
             //Mostra tabelas com scores no console
-            paginasScoresOrdenadas.reverse().forEach((pagina) => pagina.exibirTabelaScore());
+            // paginasScoresOrdenadas.reverse().forEach((pagina)=>pagina.exibirTabelaScore());
             return paginasScoresOrdenadas;
         });
     }

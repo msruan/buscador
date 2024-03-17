@@ -1,12 +1,10 @@
 import {parse} from 'node-html-parser'
-import * as jsonfile from 'jsonfile'
 import {Indexador } from "./Indexador";
 
 import { Pagina } from "./Pagina";
 import { PaginaScore } from './PaginaScore';
 import { Score } from './Score';
 import { contarOcorrenciasSubstring, devolverData, takeLastElement } from "./utils";
-import { ObjectType } from 'typescript';
 
 export class Buscador {
 
@@ -49,7 +47,7 @@ export class Buscador {
 
         let paginasScoresOrdenadas : PaginaScore[] = this.ordenarSites(paginasScores);
         //Mostra tabelas com scores no console
-        paginasScoresOrdenadas.reverse().forEach((pagina)=>pagina.exibirTabelaScore());
+        // paginasScoresOrdenadas.reverse().forEach((pagina)=>pagina.exibirTabelaScore());
 
         return paginasScoresOrdenadas;        
     }

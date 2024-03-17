@@ -11,10 +11,10 @@
     <script type="text/javascript">
         function atualizarCampo(novoValor,id) {
             if(novoValor < 10 && novoValor >= 0){
-                document.getElementById("campo"+id).innerHTML = 0+novoValor;
+                document.getElementById(id).innerHTML = 0+novoValor;
             }
             else 
-            {document.getElementById("campo"+id).innerHTML = novoValor;}
+            {document.getElementById(id).innerHTML = novoValor;}
         }
     </script>
 </head>
@@ -74,46 +74,45 @@
             </div>
             <div>
                 <label for="0">Frequência</label>
-                <input type="range" min="5" max="30" step="5" value="5" id="0" onchange="atualizarCampo(this.value,1) " oninput="atualizarCampo(this.value,1)">
-                <span id="campo1">5</span>
+                <input type="range" min="5" max="30" step="5" value="5" id="0" onchange="atualizarCampo(this.value,1) " oninput="atualizarCampo(this.value,'frequencia')">
+                <span id="frequencia">5</span>
 
                 <label for="1">H1</label>
-                <input type="range" min="5" max="30" step="5" value="15" id="1" onchange="atualizarCampo(this.value,2)" oninput="atualizarCampo(this.value,2)">
-                <span id="campo2">15</span>
+                <input type="range" min="5" max="30" step="5" value="15" id="1" onchange="atualizarCampo(this.value,2)" oninput="atualizarCampo(this.value,'h1')">
+                <span id="h1">15</span>
 
                 <label for="2">H2</label>
-                <input type="range" min="5" max="30" step="5" value="10" id="2" onchange="atualizarCampo(this.value,3)" oninput="atualizarCampo(this.value,3)">
-                <span id="campo3">10</span>
+                <input type="range" min="5" max="30" step="5" value="10" id="2" onchange="atualizarCampo(this.value,3)" oninput="atualizarCampo(this.value,'h2')">
+                <span id="h2">10</span>
 
                 <label for="3">P</label>
-                <input type="range" min="5" max="30" step="5" value="5" id="3" onchange="atualizarCampo(this.value,4)" oninput="atualizarCampo(this.value,4)">
-                <span id="campo4">5</span>
+                <input type="range" min="5" max="30" step="5" value="5" id="3" onchange="atualizarCampo(this.value,4)" oninput="atualizarCampo(this.value,'p')">
+                <span id="p">5</span>
 
                 <label for="4">A</label>
-                <input type="range" min="2" max="30" step="2" value="2" id="4" onchange="atualizarCampo(this.value,5)" oninput="atualizarCampo(this.value,5)">
-                <span id="campo5">2</span>
+                <input type="range" min="2" max="30" step="2" value="2" id="4" onchange="atualizarCampo(this.value,5)" oninput="atualizarCampo(this.value,'a')">
+                <span id="a">2</span>
 
                 <label for="5">Autoridade</label>
-                <input type="range" min="5" max="30" step="5" value="20" id="5" onchange="atualizarCampo(this.value,6)" oninput="atualizarCampo(this.value,6)">
-                <span id="campo6">20</span>
+                <input type="range" min="5" max="30" step="5" value="20" id="5" onchange="atualizarCampo(this.value,6)" oninput="atualizarCampo(this.value,'autoridade')">
+                <span id="autoridade">20</span>
 
                 <label for="6">Autoreferência</label>
-                <input type="range" min="-30" max="-5" step="5" value="-20" id="6" onchange="atualizarCampo(this.value,7)" oninput="atualizarCampo(this.value,7)">
-                <span id="campo7">-20</span>
+                <input type="range" min="-30" max="-5" step="5" value="-20" id="6" onchange="atualizarCampo(this.value,7)" oninput="atualizarCampo(this.value,'autoreferencia')">
+                <span id="autoreferencia">-20</span>
 
                 <label for="7">Frescor</label>
                 <input type="range" min="5" max="30" step="5" value="30" id="7" onchange="atualizarCampo(this.value,8)" oninput="atualizarCampo(this.value,8)">
-                <span id="campo8">30</span>
+                <span id="frescor">30</span>
 
                 <label for="8">Idade</label>
                 <input type="range" min="-30" max="-5" step="5" value="-5" id="8" onchange="atualizarCampo(this.value,9)" oninput="atualizarCampo(this.value,9)">
-                <span id="campo9">-5</span>
+                <span id="idade">-5</span>
 
             </div>
 
-            <button type="submit" form="form1" id="submit">Enviar?</button>
+            <button type="button" form="form1" id="submit">Enviar?</button>
         </fieldset>
     </form>
-
 </body>
 </html>

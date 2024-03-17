@@ -38,6 +38,16 @@ async function main(){
         res.send(html);
     });
 
+    app.post('/atualizar-scores', async (req, res) => {
+        try {
+            const scores = jsonfile.readFileSync('../scores.json');
+            res.json(scores);
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Erro ao atualizar JSON');
+        }
+    });
 
     app.post('/atualizar-json', async (req, res) => {
         try {

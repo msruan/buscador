@@ -67,6 +67,16 @@ function main() {
             const html = (0, index_1.criarPaginaResultados)(results, input); // Função para criar a página HTML com os resultados
             res.send(html);
         }));
+        app.post('/atualizar-scores', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const scores = jsonfile.readFileSync('../scores.json');
+                res.json(scores);
+            }
+            catch (error) {
+                console.error(error);
+                res.status(500).send('Erro ao atualizar JSON');
+            }
+        }));
         app.post('/atualizar-json', (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const newData = req.body;
