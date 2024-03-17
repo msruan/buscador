@@ -36,16 +36,20 @@ class Buscador {
         paginasScores.forEach((paginaScore) => { paginasOrdenadas.push(paginaScore.pagina); });
         return paginasOrdenadas;
     }
+    ehExibivel(paginaScore) {
+        return paginaScore.score.frequencia > 0;
+    }
     busca(searched_term) {
         return __awaiter(this, void 0, void 0, function* () {
             const paginas = this.indexador.paginasBaixadas;
-            const paginasScores = [];
+            let paginasScores = [];
             for (let pagina of paginas) {
                 const score = this.calcularPontuacoes(pagina, searched_term);
                 const paginaScore = new PaginaScore_1.PaginaScore(pagina, score);
                 paginasScores.push(paginaScore);
             }
-            return paginasScores;
+            paginasScores = paginasScores.filter((paginaScore) => { return this.ehExibivel(paginaScore); });
+            return this.ordenarSites(paginasScores);
         });
     }
     calcularPontuacoes(pagina, searched_term) {

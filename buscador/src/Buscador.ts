@@ -38,18 +38,23 @@ export class Buscador {
 
         return paginasOrdenadas;
     }
+
+    private ehExibivel(paginaScore : PaginaScore) : boolean {
+        return paginaScore.score.frequencia > 0;
+    }
     
-    public async busca(searched_term : string) : Promise<PaginaScore[]>{
+    public async busca(searched_term : string) : Promise<Pagina[]>{
 
         const paginas : Pagina[] = this.indexador.paginasBaixadas;
-        const paginasScores : PaginaScore[] = [];
+        let paginasScores : PaginaScore[] = [];
 
         for(let pagina of paginas){
             const score : Score = this.calcularPontuacoes(pagina,searched_term);
             const paginaScore : PaginaScore = new PaginaScore(pagina,score);
             paginasScores.push(paginaScore);
         }
-        return paginasScores;
+        paginasScores = paginasScores.filter((paginaScore) => {return this.ehExibivel(paginaScore)});
+        return this.ordenarSites(paginasScores);
     }
 
     private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {// : ScoreObject

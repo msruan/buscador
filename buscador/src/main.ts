@@ -12,16 +12,10 @@ async function main(){
     await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
     indexador.carregarPaginasBaixadas();
     let google : Buscador = new Buscador(indexador);
-    const scores : PaginaScore[] = await google.busca('matrix');
+    const scores : Pagina[] = await google.busca('matrix');
 
-    scores.forEach ( (paginaScore) => {console.log("Pontos totais da página "+paginaScore.pagina.title
-            +": " + paginaScore.score.calcularPontosTotais())
-            console.log("Pontuação detalhada: "+paginaScore.score.toString());
-        })
-
-    const scoreTotalPorPagina : Pagina[] = google.ordenarSites(await scores)
-    for(let site of scoreTotalPorPagina){
-        console.log(site.title)
+    for(let pagina of scores){
+        console.log(pagina.title)
     }
     
     const app = express();

@@ -23,14 +23,8 @@ function main() {
         indexador.carregarPaginasBaixadas();
         let google = new Buscador_1.Buscador(indexador);
         const scores = yield google.busca('matrix');
-        scores.forEach((paginaScore) => {
-            console.log("Pontos totais da página " + paginaScore.pagina.title
-                + ": " + paginaScore.score.calcularPontosTotais());
-            console.log("Pontuação detalhada: " + paginaScore.score.toString());
-        });
-        const scoreTotalPorPagina = google.ordenarSites(yield scores);
-        for (let site of scoreTotalPorPagina) {
-            console.log(site.title);
+        for (let pagina of scores) {
+            console.log(pagina.title);
         }
         const app = (0, express_1.default)();
         // Define o diretório onde os arquivos estáticos (como HTML, CSS, imagens, etc.) serão servidos

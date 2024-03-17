@@ -37,7 +37,6 @@ section header ul li {
     list-style: none;
     font-weight: bold;
     font-size: 15px;
-    
 }
 
 section .main {
@@ -73,6 +72,7 @@ button {
 }
 
 .main img {
+    margin-top: 100px;
     max-width: 300px;
     width: auto;
     height: auto;
@@ -95,7 +95,7 @@ button {
 
 .footer {
     display: flex;
-    margin-top: 200px;
+    margin-top: 150px;
     
     h3 {
         margin-right: 9px;
