@@ -1,1 +1,6 @@
 -> Suportar várias fontes de sites diferentes (limitado no momento pela questão de como nomear os arquivos e os diretorios)
+
+        To do:
+(DIEGO) - Consertar a forma como o site de resultados eh feito
+- Painel de controle sumiu :O (acho q eh so trazer aquela div paineldecontrole de volta...)
+(A GENTE) - Tabela com scores

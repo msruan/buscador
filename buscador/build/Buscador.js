@@ -25,7 +25,7 @@ class Buscador {
             if (somaPontuacao_a == somaPontuacao_b) {
                 return 0;
             }
-            else if (somaPontuacao_a < somaPontuacao_b) {
+            else if (somaPontuacao_a > somaPontuacao_b) {
                 return 1;
             }
             else {

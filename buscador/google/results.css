@@ -1,22 +1,21 @@
 * {
-    font-family: 'arial', sans-serif;
-    /* margin: 0;
+  font-family: "arial", sans-serif;
+  /* margin: 0;
     padding: 0;
     box-sizing: border-box; */
 }
 
-/* @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
-
-
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: tan;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* justify-content:; */
+  /* background-color: tan;
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -25,8 +24,20 @@ body {
     align-items: center;
     justify-content: center;
 
-    background-position: center;
+    background-position: center; */
+
+  & img {
+    width: 30%;
+    display: flex;
+    justify-self: center;
+  }
 }
+/* @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+
+
 
 .titulo {
     color: #ffffff;

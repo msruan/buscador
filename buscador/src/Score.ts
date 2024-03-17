@@ -42,7 +42,7 @@ export class Score {
             a = ${this.a};
             autoridade = ${this.autoridade};
             autoreferencia = ${this.autoreferencia};
-            frescor = ${this.fresco};
+            fresco = ${this.fresco};
         `;
     }
 }

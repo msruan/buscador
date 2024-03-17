@@ -51,6 +51,24 @@ function criarPaginaResultados(results, searched_term) {
         </div>
         `;
     });
+    // results.forEach(result => {
+    //     html += `
+    //     <div class="resultTable">
+    //     <header>
+    //     <div class="titulo">
+    //     <a href="../sites/${result.link}" target="_blank">
+    //     <h2>${result.title}</h2>
+    //     </a>
+    //             </div>
+    //             </header>
+    //             <main>
+    //             <div class="description">
+    //                 <p>${result.description}</p>
+    //             </div>
+    //         </main>
+    //         </div>
+    //     `;
+    // });
     html += `
             </div>
         </body>
