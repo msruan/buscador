@@ -72,6 +72,8 @@ button {
     border-color: #d4cdcd;
     font-size: 17px;
     cursor: pointer;
+    justify-self: center;
+    background-color: red;
 }
 
 .main img {
@@ -113,7 +115,8 @@ button {
     }
 }
 
-#form1 label{
+#form1 label {
+  justify-items: center;
   text-align: start;
   /* justify-items: start; */
   /* background-color: red; */
