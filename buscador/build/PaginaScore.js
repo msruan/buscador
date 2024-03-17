@@ -19,5 +19,8 @@ class PaginaScore {
         console.table(this.score);
         console.log("\n" + (0, utils_1.resetCor)());
     }
+    ehExibivel() {
+        return this.score.frequencia > 0;
+    }
 }
 exports.PaginaScore = PaginaScore;

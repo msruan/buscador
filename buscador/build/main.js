@@ -49,7 +49,7 @@ function main() {
         yield indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
         indexador.carregarPaginasBaixadas();
         let google = new Buscador_1.Buscador(indexador);
-        const scores = yield google.busca('matrix');
+        // const scores : PaginaScore[] = await google.busca('matrix');
         const app = (0, express_1.default)();
         app.use(express_1.default.json());
         app.use((0, cors_1.default)());

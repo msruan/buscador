@@ -35,12 +35,8 @@ export class Buscador {
 
         return paginasOrdenadas;
     }
-
-    private ehExibivel(paginaScore : PaginaScore) : boolean {
-        return paginaScore.score.frequencia > 0;
-    }
     
-    public async busca(searched_term : string) : Promise<Pagina[]>{
+    public async busca(searched_term : string) : Promise<PaginaScore[]>{
 
         const paginas : Pagina[] = this.indexador.paginasBaixadas;
         let paginasScores : PaginaScore[] = [];
@@ -55,13 +51,7 @@ export class Buscador {
         //Mostra tabelas com scores no console
         paginasScoresOrdenadas.reverse().forEach((pagina)=>pagina.exibirTabelaScore());
 
-        //Tirar as que nao incluem o termo pesquisado
-        paginasScoresOrdenadas = paginasScoresOrdenadas.filter((paginaScore) => {return this.ehExibivel(paginaScore)});
-
-        const paginasOrdenadas : Pagina[] = [];
-        paginasScoresOrdenadas.forEach((paginaScore) => {paginasOrdenadas.push(paginaScore.pagina)});
-
-        return paginasOrdenadas;        
+        return paginasScoresOrdenadas;        
     }
 
     private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {// : ScoreObject

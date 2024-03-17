@@ -34,9 +34,6 @@ class Buscador {
         });
         return paginasOrdenadas;
     }
-    ehExibivel(paginaScore) {
-        return paginaScore.score.frequencia > 0;
-    }
     busca(searched_term) {
         return __awaiter(this, void 0, void 0, function* () {
             const paginas = this.indexador.paginasBaixadas;
@@ -49,11 +46,7 @@ class Buscador {
             let paginasScoresOrdenadas = this.ordenarSites(paginasScores);
             //Mostra tabelas com scores no console
             paginasScoresOrdenadas.reverse().forEach((pagina) => pagina.exibirTabelaScore());
-            //Tirar as que nao incluem o termo pesquisado
-            paginasScoresOrdenadas = paginasScoresOrdenadas.filter((paginaScore) => { return this.ehExibivel(paginaScore); });
-            const paginasOrdenadas = [];
-            paginasScoresOrdenadas.forEach((paginaScore) => { paginasOrdenadas.push(paginaScore.pagina); });
-            return paginasOrdenadas;
+            return paginasScoresOrdenadas;
         });
     }
     calcularPontuacoes(pagina, searched_term) {

@@ -15,8 +15,7 @@ async function main(){
     await indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
     indexador.carregarPaginasBaixadas();
     let google : Buscador = new Buscador(indexador);
-    const scores : Pagina[] = await google.busca('matrix');
-
+    // const scores : PaginaScore[] = await google.busca('matrix');
 
     const app = express();
     app.use(express.json()) 

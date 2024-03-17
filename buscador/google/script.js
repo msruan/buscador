@@ -19,8 +19,10 @@ function main() {
   const buttonElement = document.getElementById("searchButton");
   const submitElement = document.getElementById("submit");
 
-  buttonElement.addEventListener("click", () =>
-    searchByInput(inputElement[0].value)
+  buttonElement.addEventListener("click", () =>{
+    const valor = inputElement[0].value;
+    if(valor != null && valor != "")
+        searchByInput(valor)}
   );
   submitElement.addEventListener("click", (e) => atualizarJson(e));
 }
