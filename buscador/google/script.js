@@ -1,22 +1,18 @@
-document.addEventListener('DOMContentLoaded', main)
+document.addEventListener('DOMContentLoaded', main);
+
+async function searchByInput(value) {
+    const response = await fetch(`http://localhost:3000/search/${value}`);
+    const html = await response.text();
+    const newWindow = window.open(); // Abrir uma nova janela do navegador
+    newWindow.document.write(html); // Escrever o HTML na nova janela
+    newWindow.document.title = `${value}`;
+}
 
 function handleEnterDown(e) {
     if (e.key === "Enter") {
-        // window.KeyboardEvent()
         const buttonElement = document.getElementById('searchButton')
-        // const buttonElement = document.getElementById('search')
-
         buttonElement.click()
     }
-}
-
-async function searchByInput(value) {
-
-        // console.log(value)
-        // const response = await fetch(`http://localhost:3000/search/inputValue=${value}`)
-        const response = await fetch(`http://localhost:3000/search/${value}`)
-
-        console.log(await response.json())
 }
 
 function main () {
@@ -24,7 +20,4 @@ function main () {
     const buttonElement = document.getElementById('searchButton')
 
     buttonElement.addEventListener('click', () => searchByInput(inputElement[0].value)) 
-    // inputElement[0].addEventListener('keypress', (e) => {
-    //     if (e.keycode === 13) {searchByInput(inputElement[0].value)} 
-    // })
 }

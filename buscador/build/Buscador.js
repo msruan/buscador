@@ -19,7 +19,7 @@ class Buscador {
         this.indexador = indexador;
     }
     ordenarSites(paginasScores) {
-        paginasScores.sort((a, b) => {
+        const paginasOrdenadas = paginasScores.sort((a, b) => {
             const somaPontuacao_a = a.score.calcularPontosTotais();
             const somaPontuacao_b = b.score.calcularPontosTotais();
             if (somaPontuacao_a == somaPontuacao_b) {
@@ -32,8 +32,6 @@ class Buscador {
                 return -1;
             }
         });
-        const paginasOrdenadas = [];
-        paginasScores.forEach((paginaScore) => { paginasOrdenadas.push(paginaScore.pagina); });
         return paginasOrdenadas;
     }
     ehExibivel(paginaScore) {
@@ -48,8 +46,14 @@ class Buscador {
                 const paginaScore = new PaginaScore_1.PaginaScore(pagina, score);
                 paginasScores.push(paginaScore);
             }
-            paginasScores = paginasScores.filter((paginaScore) => { return this.ehExibivel(paginaScore); });
-            return this.ordenarSites(paginasScores);
+            let paginasScoresOrdenadas = this.ordenarSites(paginasScores);
+            //Mostra tabelas com scores no console
+            paginasScoresOrdenadas.reverse().forEach((pagina) => pagina.exibirTabelaScore());
+            //Tirar as que nao incluem o termo pesquisado
+            paginasScoresOrdenadas = paginasScoresOrdenadas.filter((paginaScore) => { return this.ehExibivel(paginaScore); });
+            const paginasOrdenadas = [];
+            paginasScoresOrdenadas.forEach((paginaScore) => { paginasOrdenadas.push(paginaScore.pagina); });
+            return paginasOrdenadas;
         });
     }
     calcularPontuacoes(pagina, searched_term) {

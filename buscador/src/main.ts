@@ -3,8 +3,8 @@ import { Indexador } from "./Indexador";
 
 import express from 'express';
 import cors from 'cors';
-import { PaginaScore } from "./PaginaScore";
 import { Pagina } from "./Pagina";
+import { criarPaginaResultados } from "./index";
 
 async function main(){
 
@@ -14,10 +14,11 @@ async function main(){
     let google : Buscador = new Buscador(indexador);
     const scores : Pagina[] = await google.busca('matrix');
 
-    for(let pagina of scores){
-        console.log(pagina.title)
-    }
-    
+    // scores.forEach ( (paginaScore) => {console.log("Pontos totais da página "+paginaScore.pagina.title
+    //         +": " + paginaScore.score.calcularPontosTotais())
+    //         console.log("Pontuação detalhada: "+paginaScore.score.toString());
+    //     })
+
     const app = express();
 
     // Define o diretório onde os arquivos estáticos (como HTML, CSS, imagens, etc.) serão servidos
@@ -30,18 +31,16 @@ async function main(){
         res.send('Servidor Node.js está rodando!')
     });
 
-    //Define a rota a partir da qual será chamada a página de resultados
-    app.get('/search/:value', async (req, res) => {
-        const input = req.params.value
-        const array =  await google.busca(input)
-        
-        res.json(array)
-    });
-
     // Inicia o servidor na porta 3000
     app.listen(3000, () => {
     console.log('Servidor Express iniciado na porta 3000');
     });
-}
 
+    app.get('/search/:value', async (req, res) => {
+        const input = req.params.value;
+        const results = await google.busca(input);
+        const html = criarPaginaResultados(results,input); // Função para criar a página HTML com os resultados
+        res.send(html);
+    });
+}
 main();

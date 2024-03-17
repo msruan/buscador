@@ -16,6 +16,7 @@ const Buscador_1 = require("./Buscador");
 const Indexador_1 = require("./Indexador");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const index_1 = require("./index");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         let indexador = new Indexador_1.Indexador();
@@ -23,9 +24,10 @@ function main() {
         indexador.carregarPaginasBaixadas();
         let google = new Buscador_1.Buscador(indexador);
         const scores = yield google.busca('matrix');
-        for (let pagina of scores) {
-            console.log(pagina.title);
-        }
+        // scores.forEach ( (paginaScore) => {console.log("Pontos totais da página "+paginaScore.pagina.title
+        //         +": " + paginaScore.score.calcularPontosTotais())
+        //         console.log("Pontuação detalhada: "+paginaScore.score.toString());
+        //     })
         const app = (0, express_1.default)();
         // Define o diretório onde os arquivos estáticos (como HTML, CSS, imagens, etc.) serão servidos
         //app.use(express.static(path.join(__dirname, '../google')));
@@ -35,16 +37,16 @@ function main() {
         app.get('/', (req, res) => {
             res.send('Servidor Node.js está rodando!');
         });
-        //Define a rota a partir da qual será chamada a página de resultados
-        app.get('/search/:value', (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const input = req.params.value;
-            const array = yield google.busca(input);
-            res.json(array);
-        }));
         // Inicia o servidor na porta 3000
         app.listen(3000, () => {
             console.log('Servidor Express iniciado na porta 3000');
         });
+        app.get('/search/:value', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const input = req.params.value;
+            const results = yield google.busca(input);
+            const html = (0, index_1.criarPaginaResultados)(results, input); // Função para criar a página HTML com os resultados
+            res.send(html);
+        }));
     });
 }
 main();

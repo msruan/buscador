@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -28,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.devolverData = exports.contarOcorrenciasSubstring = exports.takeLastElement = exports.trasnformarURLRelativaEmNormal = exports.readWebPageHTML = exports.listarArquivosDoDiretorio = void 0;
+exports.resetCor = exports.obterCorAleatoria = exports.devolverData = exports.contarOcorrenciasSubstring = exports.takeLastElement = exports.trasnformarURLRelativaEmNormal = exports.readWebPageHTML = exports.listarArquivosDoDiretorio = void 0;
 const fs = __importStar(require("fs"));
 //File
 function listarArquivosDoDiretorio(diretorio) {
@@ -77,3 +81,44 @@ function devolverData(str_data) {
     return data;
 }
 exports.devolverData = devolverData;
+//Colors
+function obterCorAleatoria() {
+    const keys = Object.keys(COLORS);
+    const randomIndex = Math.floor(Math.random() * keys.length);
+    return COLORS[keys[randomIndex]];
+}
+exports.obterCorAleatoria = obterCorAleatoria;
+function resetCor() {
+    return COLORS.RESET;
+}
+exports.resetCor = resetCor;
+const COLORS = {
+    RESET: '\x1b[0m',
+    BLACK: '\x1b[0;30m',
+    RED: '\x1b[0;31m',
+    GREEN: '\x1b[0;32m',
+    YELLOW: '\x1b[0;33m',
+    BLUE: '\x1b[0;34m',
+    PURPLE: '\x1b[0;35m',
+    CYAN: '\x1b[0;36m',
+    WHITE: '\x1b[0;37m'
+};
+function obterCor(numero) {
+    switch (numero) {
+        case 1:
+            return COLORS.BLACK;
+        case 2:
+            return COLORS.RED;
+        case 3:
+            return COLORS.GREEN;
+        case 4:
+            return COLORS.YELLOW;
+        case 5:
+            return COLORS.BLUE;
+        case 6:
+            return COLORS.PURPLE;
+        case 7:
+        default:
+            return COLORS.CYAN;
+    }
+}

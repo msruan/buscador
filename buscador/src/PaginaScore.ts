@@ -1,5 +1,6 @@
 import { Pagina } from "./Pagina";
 import {Score} from "./Score"
+import { obterCorAleatoria, resetCor } from "./utils";
 
 export class PaginaScore {
 
@@ -16,5 +17,12 @@ export class PaginaScore {
 
     public get score(){
         return this._score;
+    }
+
+    public exibirTabelaScore() : void{
+        console.log(obterCorAleatoria()+"Página: "+this.pagina.title);
+        console.log(obterCorAleatoria()+"Pontuação total: "+this.score.calcularPontosTotais());
+        console.table(this.score);
+        console.log("\n"+resetCor())
     }
 }

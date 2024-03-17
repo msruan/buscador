@@ -16,9 +16,9 @@ export class Buscador {
         this.indexador = indexador;
     }
 
-    public ordenarSites(paginasScores: PaginaScore[]): Pagina[] {
+    public ordenarSites(paginasScores: PaginaScore[]): PaginaScore[] {
 
-        paginasScores.sort( (a,b) => {
+        const paginasOrdenadas = paginasScores.sort( (a,b) => {
             const somaPontuacao_a = a.score.calcularPontosTotais();
             const somaPontuacao_b = b.score.calcularPontosTotais();
 
@@ -32,9 +32,6 @@ export class Buscador {
                 return -1;
             }
         } );
-
-        const paginasOrdenadas : Pagina[] = [];
-        paginasScores.forEach((paginaScore) => {paginasOrdenadas.push(paginaScore.pagina)});
 
         return paginasOrdenadas;
     }
@@ -53,8 +50,18 @@ export class Buscador {
             const paginaScore : PaginaScore = new PaginaScore(pagina,score);
             paginasScores.push(paginaScore);
         }
-        paginasScores = paginasScores.filter((paginaScore) => {return this.ehExibivel(paginaScore)});
-        return this.ordenarSites(paginasScores);
+
+        let paginasScoresOrdenadas : PaginaScore[] = this.ordenarSites(paginasScores);
+        //Mostra tabelas com scores no console
+        paginasScoresOrdenadas.reverse().forEach((pagina)=>pagina.exibirTabelaScore());
+
+        //Tirar as que nao incluem o termo pesquisado
+        paginasScoresOrdenadas = paginasScoresOrdenadas.filter((paginaScore) => {return this.ehExibivel(paginaScore)});
+
+        const paginasOrdenadas : Pagina[] = [];
+        paginasScoresOrdenadas.forEach((paginaScore) => {paginasOrdenadas.push(paginaScore.pagina)});
+
+        return paginasOrdenadas;        
     }
 
     private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {// : ScoreObject
