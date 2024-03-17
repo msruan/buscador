@@ -1,4 +1,3 @@
-const fs = require('fs');
 
 document.addEventListener('DOMContentLoaded', main);
 
@@ -22,7 +21,7 @@ function main () {
     const submitElement = document.getElementById('submit')
 
     buttonElement.addEventListener('click', () => searchByInput(inputElement[0].value)) 
-    submitElement.addEventListener('click', () => atualizarJson()) 
+    submitElement.addEventListener('click', (e) => atualizarJson(e)) 
 }
 
 // function atualizarCampo(novoValor, id) {
@@ -30,36 +29,38 @@ function main () {
 //     document.getElementById(`campo${id}`).innerText = novoValor;
 // }
 
-function atualizarJson() {
-    let frequencia = document.getElementById("0").value
-    console.log(frequencia)
-    let h1 = document.getElementById("1").value
-    let h2 = document.getElementById("2").value
-    let a = document.getElementById("3").value
-    let p = document.getElementById("4").value
-    let autoridade = document.getElementById("5").value
-    let autoreferencia = document.getElementById("6").value
-    let frescor = document.getElementById("7").value
-    let velho = document.getElementById("8").value
+async function atualizarJson(event) {
+    event.preventDefault();
 
-    let jsonData
+    console.log("Chamei a atualizar score eba"+document.getElementById("0").value);
 
-    // fetch('scores.json')
-    // .then(response => response.text())
-    // .then(text => {
-    // const array = text.split("\n");
-    // // console.log(array);
-//   })
-
-    // let jsonData = JSON.parse(fs.readFileSync("../scores.json"))
-    // console.log("Valores padrões")
-    // console.table(jsonData);
-    // jsonData.frequencia = frequencia
-    // fs.writeFileSync("../scores.json",JSON.stringify(jsonData,null,2))
-
-    // fetch('path/to/your/file.json') 
-    // .then(response => response.json()) 
-    // .then(jsonData => { 
-    //     // Edit or Add Data jsonData.someProperty = 'new value'; jsonData.newProperty = 'new data'; // Write back to the file (Note: This is not directly possible in the browser due to security reasons) }); 
-    //     } )
+    let score = {
+        "frequencia" : document.getElementById("0").value,
+        "h1" : document.getElementById("1").value,
+        "h2" : document.getElementById("2").value,
+        "a" : document.getElementById("3").value,
+        "p" : document.getElementById("4").value,
+        "autoridade" : document.getElementById("5").value,
+        "autoreferencia" : document.getElementById("6").value,
+        "frescor" : document.getElementById("7").value,
+        "velho" : document.getElementById("8").value
+    }
+    // console.table(score)"3 "
+    const jsonData = JSON.stringify(score)
+    console.log("Eu mandei...")
+    console.table(jsonData);
+    
+    const response = await fetch(`http://localhost:3000/atualizar-json`, {
+        method: 'POST',
+        body: jsonData,
+        headers: {
+            'content-type':'application/json'
+        }
+    })
+    .then((data) => { 
+        console.log("OIEEEE");
+       console.log(data);
+    }) 
+    .catch((err) => console.log(err));
+    console.log(response);
 }

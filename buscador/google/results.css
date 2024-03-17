@@ -1,5 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+* {
+    font-family: 'arial', sans-serif;
+    /* margin: 0;
+    padding: 0;
+    box-sizing: border-box; */
+}
+
+/* @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
 
 * {
     margin: 0;
@@ -115,4 +124,4 @@ body {
     .titulo {
         font-size: 40px;
     }
-}
+} */

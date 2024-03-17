@@ -13,6 +13,24 @@ function criarPaginaResultados(results, searched_term) {
         </head>
         <body>
             <h1>Resultados da Pesquisa por ${searched_term}</h1>
+
+            <section>
+                <div class="main">
+
+                    <img src="img/google.png" alt="icone google">
+
+                    <div class="caixaDePesquisa">
+                        <input type="text" class="search" onkeypress="handleEnterDown(event)">
+                    </div>
+
+                    <div class="button">
+                        <button id="searchButton">Google Search</button>
+                    </div>
+
+                
+                </div>
+            </section>
+
             <div class="caixa-de-cards">
     `;
     results.forEach(result => {

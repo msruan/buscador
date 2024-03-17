@@ -8,6 +8,7 @@ export class Indexador {
 
     private _paginasBaixadas : Pagina[] = [];
     private _dirPaginasBaixadas : string = '../sites/';
+    
 
     constructor(){
         this.carregarPaginasBaixadas();
