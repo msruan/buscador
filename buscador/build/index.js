@@ -4,7 +4,6 @@ exports.criarPaginaResultados = void 0;
 function criarPaginaResultados(results, searched_term) {
     let html = `
         <!DOCTYPE html>
-        <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,14 +29,16 @@ function criarPaginaResultados(results, searched_term) {
                     </div> 
 
                     <div>
-                        <button class="tabela">Abrir tabela</button>
+                        <button id="tabelaButton">Abrir tabela</button>
                     </div>
                 </div>
             </section
 
             <div class="caixa-de-cards">
     `;
-    results.filter((paginaScore) => paginaScore.ehExibivel()).forEach((result) => {
+    results
+        .filter((paginaScore) => paginaScore.ehExibivel())
+        .forEach((result) => {
         html += `
         <div class="card">
             <header>
@@ -95,7 +96,7 @@ function criarPaginaResultados(results, searched_term) {
     html += `
           </table>
         </body>
-    </html>`;
+    `;
     return html;
 }
 exports.criarPaginaResultados = criarPaginaResultados;

@@ -3,30 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="results.css" />
-    <title>${searched_term}</title>
+    <link rel="stylesheet" href="./style.css" />
+    <title></title>
+    <script src="./script.js"></script>
   </head>
   <body>
-    <h1>Resultados da Pesquisa por ${searched_term}</h1>
+
+    <h1>Resultados da Pesquisa por <span id="search-value" style="color: rebeccapurple; border-bottom: 0.15rem solid rebeccapurple;"></span> </h1>
 
     <section>
       <div class="main">
-        <img src="img/google.png" alt="icone google" />
-
-        <div class="caixaDePesquisa">
-          <input
-            type="text"
-            class="search"
-            onkeypress="handleEnterDown(event)"
-          />
-        </div>
-
-        <div class="button">
-          <button id="searchButton">Google Search</button>
+        <div>
+          <button id="tabelaButton">Abrir scores</button>
         </div>
       </div>
     </section>
 
-    <div class="caixa-de-cards"></div>
+    <div class="caixa-de-cards">
+      <template id="cardTemplate">
+        <div>
+          <header>
+            <div class="titulo">
+              <a href="" target="_blank">
+                <h2>${result.pagina.title}</h2>
+              </a>
+            </div>
+          </header>
+          <main>
+            <div class="description">
+              <p>${result.pagina.description}</p>
+            </div>
+          </main>
+        </div>
+      </template>
+    </div>
+
+    <ur>
+
+    <table id="results-table" summary="Essa tabela contêm as pontuações obtidas por cada página numa determinada busca" caption="Scores">
+      <tr>
+          <th>Nome</th>
+          <th>Frequência</th>
+          <th>H1</th>
+          <th>H2</th>
+          <th>A</th>
+          <th>P</th>
+          <th>Autoridade</th>
+          <th>Autoreferência</th>
+          <th>Frescor</th>
+          <th>Total</th>
+          <th>Deve aparecer</th>
+      </tr>
+
+      <template id="tableRowTemplate">
+        <tr class="cordacelula">
+          <td id="r-title">${resultado.pagina.title}</td>
+          <td id="s-frequency">${score.frequencia}</td>
+          <td id="s-h1">${score.h1}</td> 
+          <td id="s-h2">${score.h2}</td>
+          <td id="s-p">${score.p}</td>
+          <td id="s-a">${score.a}</td>
+          <td id="s-autority">${score.autoridade}</td>
+          <td id="s-selfReference">${score.autoreferencia}</td>
+          <td id="s-fresh">${score.fresco}</td>
+          <td id="s-total">${score.calcularPontosTotais()}</td>
+          <td id="shown">${resultado.ehExibivel() == true ? "Sim" : "Não"}</td>
+        </tr>
+      </template>
+    </table>
   </body>
 </html>

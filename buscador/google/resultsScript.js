@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', main);
 
 function main() {
-    const button = document.getElementById('showResultsButton');
+    console.log("eu realmente existo")
+    // const button = document.getElementById('tabelaButton');
 
-    button.addEventListener('click', () => {
-        const results = document.getElementById('results');
-        results.style.display = 'block';
-    });
+    // button.addEventListener('click', () => {
+    //     console.log("vai se fuder, da certo")
+    // });
+
 }

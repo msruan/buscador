@@ -23,14 +23,31 @@ class Buscador {
             const somaPontuacao_a = a.score.calcularPontosTotais();
             const somaPontuacao_b = b.score.calcularPontosTotais();
             if (somaPontuacao_a == somaPontuacao_b) {
-                return 0;
+                /*a. Maior quantidade de termos buscados no corpo do texto;
+                b. Maior frescor do conteúdo (datas mais recentes);
+                c. Maior número de links recebidos */
+                if (a.score.frequencia == b.score.frequencia) {
+                    if (a.score.fresco == b.score.fresco) {
+                        if (a.score.autoridade == b.score.autoridade)
+                            return 0;
+                        else if (a.score.autoridade < b.score.autoridade)
+                            return -1;
+                        else
+                            return 1;
+                    }
+                    else if (a.score.fresco < b.score.fresco) {
+                        return 1;
+                    }
+                    else
+                        return -1;
+                }
+                else if (a.score.frequencia < b.score.frequencia) {
+                    return 1;
+                }
+                else
+                    return -1;
             }
-            else if (somaPontuacao_a > somaPontuacao_b) {
-                return 1;
-            }
-            else {
-                return -1;
-            }
+            return -(somaPontuacao_a - somaPontuacao_b);
         });
         return paginasOrdenadas;
     }

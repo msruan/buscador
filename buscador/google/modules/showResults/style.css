@@ -1,0 +1,79 @@
+* {
+  font-family: "arial", sans-serif;
+  /* margin: 0;
+      padding: 0;
+      box-sizing: border-box; */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+
+  /* background-color: tan;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  
+      background-position: center; */
+
+  & img {
+    width: 10%;
+    display: flex;
+    justify-self: center;
+  }
+}
+
+.caixaDePesquisa {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button {
+  width: 70%;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+table {
+  margin-left: 20px;
+  margin-right: 20px;
+  /* border: thin solid black; */
+  caption-side: bottom;
+  display: none;
+}
+
+.cordacelula {
+  background-color: #fcba7a;
+}
+
+th {
+  background-color: #cc6600;
+}
+
+td,
+th {
+  border: thin dotted gray;
+  padding: 5px;
+}
+
+caption {
+  font-style: italic;
+  padding-top: 8px;
+}
+

@@ -37,7 +37,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Buscador_1 = require("./Buscador");
 const Indexador_1 = require("./Indexador");
-const index_1 = require("./index");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const jsonfile = __importStar(require("jsonfile"));
@@ -54,38 +53,38 @@ function main() {
         app.use(express_1.default.json());
         app.use((0, cors_1.default)());
         // Define a rota principal (localhost:300)
-        app.get('/', (req, res) => {
-            res.send('Servidor Node.js está rodando!');
+        app.get("/", (req, res) => {
+            res.send("Servidor Node.js está rodando!");
         });
         // Inicia o servidor na porta 3000
         app.listen(3000, () => {
-            console.log('Servidor Express iniciado na porta 3000');
+            console.log("Servidor Express iniciado na porta 3000");
         });
-        app.get('/search/:value', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        app.get("/search/:value", (req, res) => __awaiter(this, void 0, void 0, function* () {
             const input = req.params.value;
             const results = yield google.busca(input);
-            const html = (0, index_1.criarPaginaResultados)(results, input); // Função para criar a página HTML com os resultados
-            res.send(html);
+            // const html = criarPaginaResultados(results,input); // Função para criar a página HTML com os resultados
+            res.json(results);
         }));
-        app.post('/atualizar-scores', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        app.post("/atualizar-scores", (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const scores = jsonfile.readFileSync('../scores.json');
+                const scores = jsonfile.readFileSync("../scores.json");
                 res.json(scores);
             }
             catch (error) {
                 console.error(error);
-                res.status(500).send('Erro ao atualizar JSON');
+                res.status(500).send("Erro ao atualizar JSON");
             }
         }));
-        app.post('/atualizar-json', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        app.post("/atualizar-json", (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const newData = req.body;
-                jsonfile.writeFileSync('../scores.json', newData);
+                jsonfile.writeFileSync("../scores.json", newData);
                 res.json(newData);
             }
             catch (error) {
                 console.error(error);
-                res.status(500).send('Erro ao atualizar JSON');
+                res.status(500).send("Erro ao atualizar JSON");
             }
         }));
     });

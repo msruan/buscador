@@ -67,10 +67,8 @@
 
         <form id="form1" class="mostrar">
             <fieldset>
-                <div id="link"> 
-                    <label for="link" autofocus value="https://msruan.github.io/samples/matrix.html" id="fonte">Fonte</label>
-                    <input type="url" id="link">
-                </div>
+                <h2>Painel de Controle</h2>
+              
                 <div>
                     <label for="0">Frequência</label>
                     <input type="range" min="5" max="30" step="5" value="5" id="0" onchange="atualizarCampo(this.value,1) " oninput="atualizarCampo(this.value,'frequencia')">
@@ -110,7 +108,7 @@
 
                 </div>
 
-                <button type="submit" form="form1" id="submit">Enviar?</button>
+                <button type="submit" form="form1" id="submit">Atualizar</button>
             </fieldset>
         </form>
     </body>

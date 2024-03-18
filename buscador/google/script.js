@@ -4,36 +4,54 @@ function main() {
   const inputElement = document.getElementsByClassName("search");
   const buttonElement = document.getElementById("searchButton");
   const submitElement = document.getElementById("submit");
-  const botaoocultarElement = document.getElementById('botao-ocultar');
+  const botaoocultarElement = document.getElementById("botao-ocultar");
 
-  buttonElement.addEventListener("click", () =>{
+  buttonElement.addEventListener("click", () => {
     const valor = inputElement[0].value;
-    if(valor != null && valor != "")
-        searchByInput(valor)}
-  );
+    if (valor != null && valor != "") searchByInput(valor);
+  });
   submitElement.addEventListener("click", (e) => atualizarJson(e));
-  botaoocultarElement.addEventListener("click", (e) => mostrarOcultarFormulario(e))
+  botaoocultarElement.addEventListener("click", (e) =>
+    mostrarOcultarFormulario(e)
+  );
   // atualizarCamposFormulario(e);
 }
 
 async function atualizarCamposFormulario(event) {
   event.preventDefault();
   console.log("Aconteceu alguma coisa?");
-  
+
   const response = await fetch(`http://localhost:3000/atualizar-scores`);
   const score = await response.json();
 
-  let campos = Object.keys(score)
-  for (campo in campos){ 
-      document.getElementById(campo).innerText = score[campo];
+  let campos = Object.keys(score);
+  for (campo in campos) {
+    document.getElementById(campo).innerText = score[campo];
   }
-};
+}
 
 async function searchByInput(value) {
-  const response = await fetch(`http://localhost:3000/search/${value}`);
-  const html = await response.text();
-  const newWindow = window.open();
-  newWindow.document.write(html);
+  // const response = await fetch(`http://localhost:3000/search/${value}`);
+  // const data = await response.json();
+
+  createStorage(value)
+  window.open('./modules/showResults/index.html')
+  // const htmlNode = document.createElement("html");
+  // const script = document.createElement("script");
+  // script.src = "./resultsScript.js";
+
+  // htmlNode.appendChild(script);
+  // htmlNode.appendChild(html);
+
+  // const newWindow = window.open();
+  // newWindow.document.write(html);
+  // const head = newWindow.document.querySelector("head");
+  // const script = head.querySelector("script");
+  // script.src = "./resultsScript.js";
+}
+
+function createStorage(value) {
+  window.localStorage.setItem('@data', value)
 }
 
 function handleEnterDown(e) {
@@ -43,20 +61,19 @@ function handleEnterDown(e) {
   }
 }
 
-function mostrarOcultarFormulario(event){
-
+function mostrarOcultarFormulario(event) {
   const botaoocultar = document.getElementById("botao-ocultar");
   const form1 = document.getElementById("form1");
-  if(form1.style.display == "" || form1.style.display == "none"){
-      botaoocultar.textContent = "Ocultar painel"
-      // const fonte = document.getElementById("fonte");
-      // fonte.focus();
-      // botaoocultar.removeAttribute("href");
-      form1.style.display = "block";
-  }else {
-      botaoocultar.textContent = "Mostrar painel"
-      // botaoocultar.setAttribute('href', '#form1');
-      form1.style.display = "none";
+  if (form1.style.display == "" || form1.style.display == "none") {
+    botaoocultar.textContent = "Ocultar painel";
+    // const fonte = document.getElementById("fonte");
+    // fonte.focus();
+    // botaoocultar.removeAttribute("href");
+    form1.style.display = "block";
+  } else {
+    botaoocultar.textContent = "Mostrar painel";
+    // botaoocultar.setAttribute('href', '#form1');
+    form1.style.display = "none";
   }
   return false;
 }
@@ -65,26 +82,27 @@ function main() {
   const inputElement = document.getElementsByClassName("search");
   const buttonElement = document.getElementById("searchButton");
   const submitElement = document.getElementById("submit");
-  const botaoocultarElement = document.getElementById('botao-ocultar');
+  const botaoocultarElement = document.getElementById("botao-ocultar");
 
-  buttonElement.addEventListener("click", () =>{
+  buttonElement.addEventListener("click", () => {
     const valor = inputElement[0].value;
-    if(valor != null && valor != "")
-        searchByInput(valor)}
-  );
+    if (valor != null && valor != "") searchByInput(valor);
+  });
   submitElement.addEventListener("click", (e) => atualizarJson(e));
-  botaoocultarElement.addEventListener("click", (e) => mostrarOcultarFormulario(e))
+  botaoocultarElement.addEventListener("click", (e) =>
+    mostrarOcultarFormulario(e)
+  );
   // atualizarCamposFormulario(e);
 }
 
 // async function atualizarCamposFormulario(event) {
 //   event.preventDefault();
-  
+
 //   const response = await fetch(`http://localhost:3000/atualizar-scores`);
 //   const score = await response.json();
 
 //   let campos = Object.keys(score)
-//   for (campo in campos){ 
+//   for (campo in campos){
 //       document.getElementById(campo).innerText = score.campo;
 //   }
 // }
@@ -128,10 +146,10 @@ async function atualizarJson(event) {
   console.log(response);
 }
 
-function atualizarCampo(novoValor,id) {
-  if(novoValor < 10 && novoValor >= 0){
-      document.getElementById(id).innerHTML = 0+novoValor;
+function atualizarCampo(novoValor, id) {
+  if (novoValor < 10 && novoValor >= 0) {
+    document.getElementById(id).innerHTML = 0 + novoValor;
+  } else {
+    document.getElementById(id).innerHTML = novoValor;
   }
-  else 
-  {document.getElementById(id).innerHTML = novoValor;}
 }

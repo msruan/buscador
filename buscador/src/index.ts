@@ -6,7 +6,6 @@ export function criarPaginaResultados(
 ) {
   let html = `
         <!DOCTYPE html>
-        <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +31,7 @@ export function criarPaginaResultados(
                     </div> 
 
                     <div>
-                        <button class="tabela">Abrir tabela</button>
+                        <button id="tabelaButton">Abrir tabela</button>
                     </div>
                 </div>
             </section
@@ -40,8 +39,10 @@ export function criarPaginaResultados(
             <div class="caixa-de-cards">
     `;
 
-  results.filter((paginaScore) => paginaScore.ehExibivel()).forEach((result) => {
-    html += `
+  results
+    .filter((paginaScore) => paginaScore.ehExibivel())
+    .forEach((result) => {
+      html += `
         <div class="card">
             <header>
                 <div class="titulo">
@@ -57,7 +58,7 @@ export function criarPaginaResultados(
             </main>
         </div>
         `;
-  });
+    });
 
   html += `
             </div>
@@ -102,6 +103,6 @@ export function criarPaginaResultados(
   html += `
           </table>
         </body>
-    </html>`;
+    `;
   return html;
 }
