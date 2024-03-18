@@ -1,118 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="form.css">
-    <link rel="icon" href="img/logo.png" type="image/x-icon">
-    <script src="./script.js"></script>
-    <script type="text/javascript">
-        function atualizarCampo(novoValor,id) {
-            if(novoValor < 10 && novoValor >= 0){
-                document.getElementById(id).innerHTML = 0+novoValor;
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Google</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="form.css">
+        <link rel="icon" href="img/logo.png" type="image/x-icon">
+        <script src="./script.js"></script>
+<!--         
+        <script type="text/javascript">
+            function atualizarCampo(novoValor,id) {
+                if(novoValor < 10 && novoValor >= 0){
+                    document.getElementById(id).innerHTML = 0+novoValor;
+                }
+                else 
+                {document.getElementById(id).innerHTML = novoValor;}
             }
-            else 
-            {document.getElementById(id).innerHTML = novoValor;}
-        }
-    </script>
-</head>
+        </script> -->
+    </head>
 
-<body>
-    <section>
-        <header>
-            <ul>
-                <a href="#form1">
-                    <li>Painel de controle</li>
+    <body>
+        <section>
+            <header>
+                <a href="#form1" id="botao-ocultar">
+                    Mostrar painel
                 </a>
                 <div class="painel">
                     <div id="painel-content"></div>
                 </div>
-            </ul>
-        </header>
+            </header>
 
-        <div class="main">
+            <div class="main">
 
-            <img src="./img/google.png" alt="icone google">
+                <img src="./img/google.png" alt="icone google">
 
-            <div class="caixaDePesquisa">
-                <input type="text" class="search" autofocus onkeypress="handleEnterDown(event)">
+                <div class="caixaDePesquisa">
+                    <input type="text" class="search" autofocus onkeypress="handleEnterDown(event)">
+                </div>
+
+                <div class="button">
+                    <button id="searchButton">Google Search</button>
+                </div>
+
+                <div class="nomes">
+                    <ul>
+                        <li>Developed by:</li>
+                        <li><a href="https://github.com/bianca-bezerra" target="_blank">Bianca</a></li>
+                        <li><a href="https://github.com/msruan" target="_blank">Ruan</a></li>
+                        <li><a href="#">Vitor Hugo</a></li>
+                    </ul>
+                </div>
+
+                <div class="painel">
+                    
+                </div>
+
+                <div class="footer">
+                    <h3>@ 2024</h3>
+                    <a href="https://github.com/msruan/pi_2024.1/tree/main/buscador" target="_blank">Programação para Internet I</a>
+                </div>
             </div>
+        </section>
 
-            <div class="button">
-                <button id="searchButton">Google Search</button>
-            </div>
+        <hr>
 
-            <div class="nomes">
-                <ul>
-                    <li>Developed by:</li>
-                    <li><a href="https://github.com/bianca-bezerra" target="_blank">Bianca</a></li>
-                    <li><a href="https://github.com/msruan" target="_blank">Ruan</a></li>
-                    <li><a href="#">Vitor Hugo</a></li>
-                </ul>
-            </div>
+        <form id="form1" class="mostrar">
+            <fieldset>
+                <div id="link"> 
+                    <label for="link" autofocus value="https://msruan.github.io/samples/matrix.html" id="fonte">Fonte</label>
+                    <input type="url" id="link">
+                </div>
+                <div>
+                    <label for="0">Frequência</label>
+                    <input type="range" min="5" max="30" step="5" value="5" id="0" onchange="atualizarCampo(this.value,1) " oninput="atualizarCampo(this.value,'frequencia')">
+                    <span id="frequencia">5</span>
 
-            <div class="painel">
-                
-            </div>
+                    <label for="1">H1</label>
+                    <input type="range" min="5" max="30" step="5" value="15" id="1" onchange="atualizarCampo(this.value,2)" oninput="atualizarCampo(this.value,'h1')">
+                    <span id="h1">15</span>
 
-            <div class="footer">
-                <h3>@ 2024</h3>
-                <a href="https://github.com/msruan/pi_2024.1/tree/main/buscador" target="_blank">Programação para Internet I</a>
-            </div>
-        </div>
-    </section>
+                    <label for="2">H2</label>
+                    <input type="range" min="5" max="30" step="5" value="10" id="2" onchange="atualizarCampo(this.value,3)" oninput="atualizarCampo(this.value,'h2')">
+                    <span id="h2">10</span>
 
-    <hr>
+                    <label for="3">P</label>
+                    <input type="range" min="5" max="30" step="5" value="5" id="3" onchange="atualizarCampo(this.value,4)" oninput="atualizarCampo(this.value,'p')">
+                    <span id="p">5</span>
 
-    <form id="form1">
-        <fieldset>
-            <div class="link"> 
-                <label for="link" value="https://msruan.github.io/samples/matrix.html" id="fonte">Fonte</label>
-                <input type="url" id="link">
-            </div>
-            <div>
-                <label for="0">Frequência</label>
-                <input type="range" min="5" max="30" step="5" value="5" id="0" onchange="atualizarCampo(this.value,1) " oninput="atualizarCampo(this.value,'frequencia')">
-                <span id="frequencia">5</span>
+                    <label for="4">A</label>
+                    <input type="range" min="2" max="30" step="2" value="2" id="4" onchange="atualizarCampo(this.value,5)" oninput="atualizarCampo(this.value,'a')">
+                    <span id="a">2</span>
 
-                <label for="1">H1</label>
-                <input type="range" min="5" max="30" step="5" value="15" id="1" onchange="atualizarCampo(this.value,2)" oninput="atualizarCampo(this.value,'h1')">
-                <span id="h1">15</span>
+                    <label for="5">Autoridade</label>
+                    <input type="range" min="5" max="30" step="5" value="20" id="5" onchange="atualizarCampo(this.value,6)" oninput="atualizarCampo(this.value,'autoridade')">
+                    <span id="autoridade">20</span>
 
-                <label for="2">H2</label>
-                <input type="range" min="5" max="30" step="5" value="10" id="2" onchange="atualizarCampo(this.value,3)" oninput="atualizarCampo(this.value,'h2')">
-                <span id="h2">10</span>
+                    <label for="6">Autoreferência</label>
+                    <input type="range" min="-30" max="-5" step="5" value="-20" id="6" onchange="atualizarCampo(this.value,7)" oninput="atualizarCampo(this.value,'autoreferencia')">
+                    <span id="autoreferencia">-20</span>
 
-                <label for="3">P</label>
-                <input type="range" min="5" max="30" step="5" value="5" id="3" onchange="atualizarCampo(this.value,4)" oninput="atualizarCampo(this.value,'p')">
-                <span id="p">5</span>
+                    <label for="7">Frescor</label>
+                    <input type="range" min="5" max="30" step="5" value="30" id="7" onchange="atualizarCampo(this.value,8)" oninput="atualizarCampo(this.value,8)">
+                    <span id="frescor">30</span>
 
-                <label for="4">A</label>
-                <input type="range" min="2" max="30" step="2" value="2" id="4" onchange="atualizarCampo(this.value,5)" oninput="atualizarCampo(this.value,'a')">
-                <span id="a">2</span>
+                    <label for="8">Idade</label>
+                    <input type="range" min="-30" max="-5" step="5" value="-5" id="8" onchange="atualizarCampo(this.value,9)" oninput="atualizarCampo(this.value,9)">
+                    <span id="idade">-5</span>
 
-                <label for="5">Autoridade</label>
-                <input type="range" min="5" max="30" step="5" value="20" id="5" onchange="atualizarCampo(this.value,6)" oninput="atualizarCampo(this.value,'autoridade')">
-                <span id="autoridade">20</span>
+                </div>
 
-                <label for="6">Autoreferência</label>
-                <input type="range" min="-30" max="-5" step="5" value="-20" id="6" onchange="atualizarCampo(this.value,7)" oninput="atualizarCampo(this.value,'autoreferencia')">
-                <span id="autoreferencia">-20</span>
-
-                <label for="7">Frescor</label>
-                <input type="range" min="5" max="30" step="5" value="30" id="7" onchange="atualizarCampo(this.value,8)" oninput="atualizarCampo(this.value,8)">
-                <span id="frescor">30</span>
-
-                <label for="8">Idade</label>
-                <input type="range" min="-30" max="-5" step="5" value="-5" id="8" onchange="atualizarCampo(this.value,9)" oninput="atualizarCampo(this.value,9)">
-                <span id="idade">-5</span>
-
-            </div>
-
-            <button type="button" form="form1" id="submit">Enviar?</button>
-        </fieldset>
-    </form>
-</body>
+                <button type="submit" form="form1" id="submit">Enviar?</button>
+            </fieldset>
+        </form>
+    </body>
 </html>

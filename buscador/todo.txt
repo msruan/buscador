@@ -1,6 +1,29 @@
--> Suportar várias fontes de sites diferentes (limitado no momento pela questão de como nomear os arquivos e os diretorios)
+Stand by-> Suportar várias fontes de sites diferentes (limitado no momento pela questão de como nomear os arquivos e os diretorios)
 
         To do:
-(DIEGO) - Consertar a forma como o site de resultados eh feito
-- Painel de controle sumiu :O (acho q eh so trazer aquela div paineldecontrole de volta...)
-(A GENTE) - Tabela com scores
+(DIEGO) - Consertar a forma como o site de resultados eh feito (desistimos)
+OK - Painel de controle sumiu :O (acho q eh so trazer aquela div paineldecontrole de volta...)
+OK - (A GENTE) - Tabela com scores
+ - Esconder tabela
+ - Estilizar página de resultados
+
+Quando o formulario é enviado ele recarrega :(((.       
+        Mas isso é de se investigar, pq no  commit 809d9224e7d0a4b0c2ef28d1d229880a879bfd71
+                Author: msruan <santosruan2021@gmail.com>
+                Date:   Sun Mar 17 16:43:31 2024 -0300
+
+                tudo funcionando n mexe em nada
+        tava funcionando de boa sem recarregar, mas no commit seguinte, 
+                        commit 664de4fb32d5da0123bf7f8e936a49a339ce1951
+                Author: msruan <santosruan2021@gmail.com>
+                Date:   Sun Mar 17 18:41:23 2024 -0300
+
+                tudo funcionando + autofocus :D
+        já deu pau
+
+        obs: caso o commit q eu falei q dava certo dÊ errado, é pq na vdd era o anterior q funfava:
+                commit 05e4a30edd8577baa115405125017e89b29f5763
+                Author: msruan <santosruan2021@gmail.com>
+                Date:   Sun Mar 17 15:12:30 2024 -0300
+
+                atualizando

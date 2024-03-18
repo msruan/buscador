@@ -1,5 +1,21 @@
 document.addEventListener("DOMContentLoaded", main);
 
+function main() {
+  const inputElement = document.getElementsByClassName("search");
+  const buttonElement = document.getElementById("searchButton");
+  const submitElement = document.getElementById("submit");
+  const botaoocultarElement = document.getElementById('botao-ocultar');
+
+  buttonElement.addEventListener("click", () =>{
+    const valor = inputElement[0].value;
+    if(valor != null && valor != "")
+        searchByInput(valor)}
+  );
+  submitElement.addEventListener("click", (e) => atualizarJson(e));
+  botaoocultarElement.addEventListener("click", (e) => mostrarOcultarFormulario(e))
+  // atualizarCamposFormulario(e);
+}
+
 async function atualizarCamposFormulario(event) {
   event.preventDefault();
   console.log("Aconteceu alguma coisa?");
@@ -27,10 +43,29 @@ function handleEnterDown(e) {
   }
 }
 
+function mostrarOcultarFormulario(event){
+
+  const botaoocultar = document.getElementById("botao-ocultar");
+  const form1 = document.getElementById("form1");
+  if(form1.style.display == "" || form1.style.display == "none"){
+      botaoocultar.textContent = "Ocultar painel"
+      // const fonte = document.getElementById("fonte");
+      // fonte.focus();
+      // botaoocultar.removeAttribute("href");
+      form1.style.display = "block";
+  }else {
+      botaoocultar.textContent = "Mostrar painel"
+      // botaoocultar.setAttribute('href', '#form1');
+      form1.style.display = "none";
+  }
+  return false;
+}
+
 function main() {
   const inputElement = document.getElementsByClassName("search");
   const buttonElement = document.getElementById("searchButton");
   const submitElement = document.getElementById("submit");
+  const botaoocultarElement = document.getElementById('botao-ocultar');
 
   buttonElement.addEventListener("click", () =>{
     const valor = inputElement[0].value;
@@ -38,6 +73,7 @@ function main() {
         searchByInput(valor)}
   );
   submitElement.addEventListener("click", (e) => atualizarJson(e));
+  botaoocultarElement.addEventListener("click", (e) => mostrarOcultarFormulario(e))
   // atualizarCamposFormulario(e);
 }
 
@@ -90,4 +126,12 @@ async function atualizarJson(event) {
     })
     .catch((err) => console.log(err));
   console.log(response);
+}
+
+function atualizarCampo(novoValor,id) {
+  if(novoValor < 10 && novoValor >= 0){
+      document.getElementById(id).innerHTML = 0+novoValor;
+  }
+  else 
+  {document.getElementById(id).innerHTML = novoValor;}
 }

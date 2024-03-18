@@ -22,7 +22,7 @@ section header {
     height: 4%;
     display: flex;
     justify-content: flex-end;
-    padding: 1.1%;
+    padding: 1.8%;
     background: #3a3939;
     box-shadow: 0px 1px 5px 1px rgb(202, 202, 206);
     color: rgb(202, 198, 198);
@@ -113,6 +113,9 @@ button {
         font-size: 15px;
         color: rgb(18, 84, 172);
     }
+}
+#form1 {
+    display: none;
 }
 
 #form1 label {
