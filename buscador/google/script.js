@@ -44,15 +44,25 @@ function mostrarOcultarFormulario(event) {
   const botaoocultar = document.getElementById("botao-ocultar");
   const form1 = document.getElementById("form1");
   if (form1.style.display == "" || form1.style.display == "none") {
+    form1.style.display = "block";
+
     botaoocultar.textContent = "Ocultar painel";
     // const fonte = document.getElementById("fonte");
     // fonte.focus();
-    // botaoocultar.removeAttribute("href");
-    form1.style.display = "block";
+    // form1.scrollIntoView({behavior: "smooth"});
+
+    setTimeout( () => {
+      form1.scrollIntoView({behavior: "smooth",block:"start",inline:"nearest",duration: 1000});
+    },100);
+    botaoocultar.removeAttribute("href");
+    
   } else {
+    document.getElementById("searchButton").scrollIntoView({behavior: "smooth"});
     botaoocultar.textContent = "Mostrar painel";
     // botaoocultar.setAttribute('href', '#form1');
-    form1.style.display = "none";
+    setTimeout( () => {
+    form1.style.display = "none";}
+    ,100);
   }
   return false;
 }
