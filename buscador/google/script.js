@@ -1,53 +1,32 @@
 document.addEventListener("DOMContentLoaded", main);
 
-function main() {
+async function main() {
+  sincronizarFormulario();
+  // atualizarCamposFormulario();
   const inputElement = document.getElementsByClassName("search");
   const buttonElement = document.getElementById("searchButton");
-  const submitElement = document.getElementById("submit");
+  const submitElement = document.getElementById("submit-btn");
+  const resetElement = document.getElementById("reset-btn");
   const botaoocultarElement = document.getElementById("botao-ocultar");
 
   buttonElement.addEventListener("click", () => {
     const valor = inputElement[0].value;
     if (valor != null && valor != "") searchByInput(valor);
   });
-  submitElement.addEventListener("click", (e) => atualizarJson(e));
+
+  resetElement.addEventListener("click", resetarFormulario);
+
+  submitElement.addEventListener("click", (e) =>{ atualizarJson(e)
+     sincronizarFormulario();});
+
   botaoocultarElement.addEventListener("click", (e) =>
     mostrarOcultarFormulario(e)
   );
-  // atualizarCamposFormulario(e);
-}
-
-async function atualizarCamposFormulario(event) {
-  event.preventDefault();
-  console.log("Aconteceu alguma coisa?");
-
-  const response = await fetch(`http://localhost:3000/atualizar-scores`);
-  const score = await response.json();
-
-  let campos = Object.keys(score);
-  for (campo in campos) {
-    document.getElementById(campo).innerText = score[campo];
-  }
 }
 
 async function searchByInput(value) {
-  // const response = await fetch(`http://localhost:3000/search/${value}`);
-  // const data = await response.json();
-
   createStorage(value)
   window.open('./modules/showResults/index.html')
-  // const htmlNode = document.createElement("html");
-  // const script = document.createElement("script");
-  // script.src = "./resultsScript.js";
-
-  // htmlNode.appendChild(script);
-  // htmlNode.appendChild(html);
-
-  // const newWindow = window.open();
-  // newWindow.document.write(html);
-  // const head = newWindow.document.querySelector("head");
-  // const script = head.querySelector("script");
-  // script.src = "./resultsScript.js";
 }
 
 function createStorage(value) {
@@ -78,53 +57,20 @@ function mostrarOcultarFormulario(event) {
   return false;
 }
 
-function main() {
-  const inputElement = document.getElementsByClassName("search");
-  const buttonElement = document.getElementById("searchButton");
-  const submitElement = document.getElementById("submit");
-  const botaoocultarElement = document.getElementById("botao-ocultar");
-
-  buttonElement.addEventListener("click", () => {
-    const valor = inputElement[0].value;
-    if (valor != null && valor != "") searchByInput(valor);
-  });
-  submitElement.addEventListener("click", (e) => atualizarJson(e));
-  botaoocultarElement.addEventListener("click", (e) =>
-    mostrarOcultarFormulario(e)
-  );
-  // atualizarCamposFormulario(e);
-}
-
-// async function atualizarCamposFormulario(event) {
-//   event.preventDefault();
-
-//   const response = await fetch(`http://localhost:3000/atualizar-scores`);
-//   const score = await response.json();
-
-//   let campos = Object.keys(score)
-//   for (campo in campos){
-//       document.getElementById(campo).innerText = score.campo;
-//   }
-// }
-
 async function atualizarJson(event) {
   event.preventDefault();
 
-  console.log(
-    "Chamei a atualizar score eba" + document.getElementById("0").value
-  );
-
   let score = {
     // "fonte": document.getElementById("fonte").value,
-    frequencia: parseInt(document.getElementById("0").value),
-    h1: parseInt(document.getElementById("1").value),
-    h2: parseInt(document.getElementById("2").value),
-    a: parseInt(document.getElementById("3").value),
-    p: parseInt(document.getElementById("4").value),
-    autoridade: parseInt(document.getElementById("5").value),
-    autoreferencia: parseInt(document.getElementById("6").value),
-    fresco: parseInt(document.getElementById("7").value),
-    velho: parseInt(document.getElementById("8").value),
+    frequencia: parseInt(document.getElementById("i-frequencia").value),
+    h1: parseInt(document.getElementById("i-h1").value),
+    h2: parseInt(document.getElementById("i-h2").value),
+    a: parseInt(document.getElementById("i-a").value),
+    p: parseInt(document.getElementById("i-p").value),
+    autoridade: parseInt(document.getElementById("i-autoridade").value),
+    autoreferencia: parseInt(document.getElementById("i-autoreferencia").value),
+    fresco: parseInt(document.getElementById("i-fresco").value),
+    velho: parseInt(document.getElementById("i-velho").value),
   };
 
   const jsonData = JSON.stringify(score);
@@ -153,3 +99,69 @@ function atualizarCampo(novoValor, id) {
     document.getElementById(id).innerHTML = novoValor;
   }
 }
+
+async function resetarFormulario(){
+  try {
+    const response = await fetch(`http://localhost:3000/resetar-scores`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao obter os scores');
+    }
+
+  const score = await response.json();
+  atualizarCamposFormulario(score);
+} catch (error) {
+  console.error(error);
+  
+}
+}
+
+
+async function sincronizarFormulario(){
+  try {
+    const response = await fetch(`http://localhost:3000/atualizar-scores`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao obter os scores');
+    }
+
+  const score = await response.json();
+  atualizarCamposFormulario(score);
+} catch (error) {
+  console.error(error);
+}
+}
+
+function atualizarCamposFormulario(score) {
+
+  // Atualize os campos do formulário com os dados recebidos
+  document.getElementById("f-frequencia").textContent = score.frequencia;
+  document.getElementById("f-h1").textContent = score.h1;
+  document.getElementById("f-h2").textContent = score.h2;
+  document.getElementById("f-p").textContent = score.p;
+  document.getElementById("f-a").textContent = score.a;
+  document.getElementById("f-autoridade").textContent = score.autoridade;
+  document.getElementById("f-autoreferencia").textContent = score.autoreferencia;
+  document.getElementById("f-fresco").textContent = score.fresco;
+  document.getElementById("f-velho").textContent = score.velho;
+
+  document.getElementById("i-frequencia").value = score.frequencia;
+  document.getElementById("i-h1").value = score.h1;
+  document.getElementById("i-h2").value = score.h2;
+  document.getElementById("i-p").value = score.p;
+  document.getElementById("i-a").value = score.a;
+  document.getElementById("i-autoridade").value = score.autoridade;
+  document.getElementById("i-autoreferencia").value = score.autoreferencia;
+  document.getElementById("i-fresco").value = score.fresco;
+  document.getElementById("i-velho").value = score.velho;
+};

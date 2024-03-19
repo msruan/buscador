@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", main);
 async function main() {
   const value = window.localStorage.getItem("@data");
 
-  document.querySelector("title").textContent = value;
+  document.querySelector("title").textContent = value + " - Pesquisa Google";
 
   document.getElementById("value").textContent = value
 

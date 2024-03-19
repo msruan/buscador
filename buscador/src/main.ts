@@ -45,6 +45,17 @@ async function main() {
     }
   });
 
+  app.post("/resetar-scores", async (req, res) => {
+    try {
+      const scores = jsonfile.readFileSync("../default_scores.json");
+      jsonfile.writeFileSync("../scores.json", scores);
+      res.json(scores);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Erro ao atualizar JSON");
+    }
+  });
+
   app.post("/atualizar-json", async (req, res) => {
     try {
       const newData = req.body;
