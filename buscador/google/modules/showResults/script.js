@@ -5,8 +5,9 @@ async function main() {
 
   document.querySelector("title").textContent = value;
 
+  document.getElementById("value").textContent = value
+
   const results = await getResponse(value);
-  document.getElementById("search-value").textContent = value;
   const cardBox = document.getElementsByClassName("caixa-de-cards")[0];
   const resultsTable = document.getElementById("results-table");
 
@@ -28,16 +29,6 @@ async function main() {
   document
     .getElementById("tabelaButton")
     .addEventListener("click", mostrarOcultarTabela);
-
-  // response.forEach(element => {
-  //     console.log(element)
-  // });
-
-  // if (response) {
-  //     const h1 = document.querySelector('h1');
-
-  //     h1.innerHTML = `Resultados da Pesquisa por ${searched_term}`
-  // }
 }
 
 async function getResponse(value) {

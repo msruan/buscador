@@ -9,11 +9,16 @@
   </head>
   <body>
 
-    <h1>Resultados da Pesquisa por <span id="search-value" style="color: rebeccapurple; border-bottom: 0.15rem solid rebeccapurple;"></span> </h1>
+    <div class="search-bar">
+      <img id="logoGoogle" src="../../img/googleBranco.png" alt="">
+      <div id="search-box">
+          <h2 id="value"></h2>
+      </div>
+    </div>
 
     <section>
       <div class="main">
-        <div>
+        <div class="bordaButton">
           <button id="tabelaButton">Abrir scores</button>
         </div>
       </div>
@@ -26,6 +31,31 @@
             <div class="titulo">
               <a href="" target="_blank">
                 <h2>${result.pagina.title}</h2>
+                <style>
+                  header {
+                    margin-left: 12%;
+                    font-size: 15px;
+                    font-weight:100;
+      
+                  }
+                  .description {
+                    margin-left: 12%;
+                    margin-top: 7px;
+                    margin-bottom: 20px;
+                    color: gray;
+
+                  }
+                    a {
+                      text-decoration: none;
+                    }
+                   h2 {
+                    color: rgb(70, 133, 241) ;
+                   }
+
+                   table {
+                    margin-left: 12%;
+                   }
+                </style>
               </a>
             </div>
           </header>

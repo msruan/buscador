@@ -15,7 +15,7 @@ th {
 }
 
 td, th {
-    border: thin dotted gray;
+    /* border: thin solid gray; */
     padding: 5px;
 }
 
