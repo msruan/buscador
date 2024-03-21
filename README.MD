@@ -7,7 +7,7 @@ Link para vídeo de explicação do código: https://drive.google.com/drive/fold
 <br>
 
 <img src="/prints/search.png">
-___Página inicial de pesquisa___
+Página inicial de pesquisa
 
 <br>
 <br>
@@ -15,4 +15,4 @@ ___Página inicial de pesquisa___
 <br>
 
 <img src="/prints/results.png">
-___Página de resultados___
+Página de resultados
