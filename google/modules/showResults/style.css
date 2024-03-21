@@ -1,0 +1,144 @@
+* {
+  font-family: "arial", sans-serif;
+  margin: 0;
+  padding: 0;
+      /*box-sizing: border-box; */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: rgb(32, 33, 36);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-content: space-between;
+  /* padding: 1rem; */
+
+  /* background-color: tan;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  
+      background-position: center; */
+
+  & img {
+    width: 10%;
+    display: flex;
+    justify-self: center;
+  }
+}
+
+.caixaDePesquisa {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button {
+  width: 70%;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+table {
+  margin-left: 20px;
+  margin-right: 20px;
+  /* border: thin solid black; */
+  caption-side: bottom;
+  display: none;
+}
+
+.cordacelula {
+  background-color: #fcba7a;
+}
+
+th {
+  background-color: #cc6600;
+}
+
+td,
+th {
+  border: thin dotted gray;
+  padding: 5px;
+}
+
+caption {
+  font-style: italic;
+  padding-top: 8px;
+}
+
+.search-bar {
+  background-color: rgb(32, 33, 36);
+  
+  /* position: relative; */
+  width: 100%;
+  height: 80px;
+  top: 0;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 95px;
+    margin-left: 70px;
+    margin-top: 20px;
+  }
+
+  #search-box {
+    margin-left:47px;
+    background-color:  rgb(48, 49, 52);
+    height: 45px;
+    width:40rem;
+    border-radius: 40px;
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+    margin-top: 10px;
+    
+
+    h2 {
+      font-size: 16px;
+      margin-left: 20px;
+      color: white;
+      font-weight:300 ;
+    }
+  }
+}
+
+h3 {
+  font-weight: 300;
+  font-size: 15px; 
+}
+
+
+section .bordaButton {
+    display: flex;
+    border: 1px solid gray;
+    height: 27px;
+    width:fit-content;
+    border-radius: 100px;
+    display: flex;
+    padding: 6px ;
+    margin-left: 215px;
+    margin-bottom:50px;
+
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      margin-left: 4px;
+      margin-right: 4px;
+      font-size: 15px;
+  }
+}
+
