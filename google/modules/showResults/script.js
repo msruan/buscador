@@ -13,7 +13,7 @@ async function main() {
   const value = window.localStorage.getItem("@data");
 
   document.querySelector("title").textContent = value + " - Pesquisa Google";
-  document.getElementById("value").textContent = value
+  document.getElementById("value").value = value
 
   const results = await getResponse(value);
   const cardBox = document.getElementsByClassName("caixa-de-cards")[0];

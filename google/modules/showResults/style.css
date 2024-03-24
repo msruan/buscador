@@ -36,13 +36,6 @@ body {
   }
 }
 
-.caixaDePesquisa {
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
 .button {
   width: 70%;
   display: flex;
@@ -92,26 +85,6 @@ caption {
     margin-left: 70px;
     margin-top: 20px;
   }
-
-  #search-box {
-    margin-left:47px;
-    background-color:  rgb(48, 49, 52);
-    height: 45px;
-    width:40rem;
-    border-radius: 40px;
-    display: flex;
-    justify-content:flex-start;
-    align-items: center;
-    margin-top: 10px;
-    
-
-    h2 {
-      font-size: 16px;
-      margin-left: 20px;
-      color: white;
-      font-weight:300 ;
-    }
-  }
 }
 
 h3 {
@@ -141,4 +114,30 @@ section .bordaButton {
       font-size: 15px;
   }
 }
+
+#search-box {
+  margin-left:47px;
+  background-color:  rgb(48, 49, 52);
+  height: 45px;
+  width:40rem;
+  border-radius: 40px;
+  display: flex;
+  justify-content:flex-start;
+  align-items: center;
+  margin-top: 10px;
+
+  #value {
+    color:white;
+    font-size: 16px;
+    font-weight:300;
+    margin: 0px 20px;
+
+    /*Servem apenas para esconder as bordas do input*/
+    border:none;
+    background: transparent;
+    width: calc(100% - 2px);
+    outline: none;
+  }
+}
+
 
