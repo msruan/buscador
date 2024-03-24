@@ -1,14 +1,5 @@
 document.addEventListener("DOMContentLoaded", main);
 
-function reescreverPagina(value){
-
-  //fazer solicitacao com o termo buscado e aguardar resposta que ja vem separada em head e body
-  createStorage(value)
-  window.location.reload();
-  main();
-}
-
-
 async function main() {
   const value = window.localStorage.getItem("@data");
 
@@ -18,6 +9,14 @@ async function main() {
   const results = await getResponse(value);
   const cardBox = document.getElementsByClassName("caixa-de-cards")[0];
   const resultsTable = document.getElementById("results-table");
+
+  const inputElement = document.getElementsByClassName("search");
+  const buttonElement = document.getElementById("searchButton");
+
+  buttonElement.addEventListener("click", () => {
+    const valor = inputElement[0].value;
+    if (valor != null && valor != "") reescreverPagina(valor);
+  });
 
   console.log(results);
   results.forEach((result) => {
@@ -113,4 +112,24 @@ function createRow(result) {
   atributes[10].innerHTML = result._score.frequencia > 0 ? "Yesn't" : "Not not";
 
   return row;
+}
+
+function handleEnterDown(e) {
+  if (e.key === "Enter") {
+    const buttonElement = document.getElementById("searchButton");
+    buttonElement.click();
+  }
+}
+
+function reescreverPagina(value){
+
+  updateStorage(value)
+  document.getElementById("head").innerHTML = null;
+  document.getElementById("body").innerHTML = null;
+  window.location.reload();
+  main();
+}
+
+function updateStorage(value) {
+window.localStorage.setItem('@data', value)
 }

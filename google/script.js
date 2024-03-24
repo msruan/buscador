@@ -3,11 +3,12 @@ document.addEventListener("DOMContentLoaded", main);
 async function main() {
   sincronizarFormulario();
   // atualizarCamposFormulario();
-  const inputElement = document.getElementsByClassName("search");
-  const buttonElement = document.getElementById("searchButton");
   const submitElement = document.getElementById("submit-btn");
   const resetElement = document.getElementById("reset-btn");
   const botaoocultarElement = document.getElementById("botao-ocultar");
+  
+  const inputElement = document.getElementsByClassName("search");
+  const buttonElement = document.getElementById("searchButton");
 
   buttonElement.addEventListener("click", () => {
     const valor = inputElement[0].value;

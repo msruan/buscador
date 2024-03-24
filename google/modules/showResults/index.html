@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <head id="head">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
     <title></title>
     <script src="./script.js"></script>
   </head>
-  <body>
+  <body id="body"> 
 
     <div class="search-bar">
       <a href="../../index.html">
       <img id="logoGoogle" src="../../img/googleBranco.png" alt="">
       </a>
+
       <div id="search-box" class="caixaDePesquisa">
-        <input type="text" value="OI" id="value" class="search" autofocus onkeypress="handleEnterDown(event)">
-        <!-- <h2 id="value"></h2> -->
+        <input type="text" id="value" class="search" onkeypress="handleEnterDown(event)">
+        <div class="button">
+          <button id="searchButton">
+            <img src="img/lupa.png">
+            <!-- search -->
+          </button>
+        </div>
       </div>
+
     </div>
 
     <section>

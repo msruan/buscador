@@ -27,3 +27,9 @@ Quando o formulario é enviado ele recarrega :(((.
                 Date:   Sun Mar 17 15:12:30 2024 -0300
 
                 atualizando
+
+mudar cor do fundo do botar mostrar scores pra mesma do google quando tiver em hover
+tentar fazer aquele mini tedto aparacer quando qualquer botao ficar on hover
+sombra na accaixa de pesquisa
+hover na lupinha
+corrigir tamanho da barra de pesquisa (a lupa deveria ter um espaço menor)

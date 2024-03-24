@@ -130,13 +130,31 @@ section .bordaButton {
     color:white;
     font-size: 16px;
     font-weight:300;
-    margin: 0px 20px;
+    margin-left: 20px;
 
     /*Servem apenas para esconder as bordas do input*/
     border:none;
     background: transparent;
-    width: calc(100% - 2px);
+    width: calc(300%);
     outline: none;
+  }
+
+  #searchButton {
+    color:green;
+    border:none;
+    background: transparent;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+  }
+
+  #searchButton:hover {
+    color:red;
+    cursor: pointer;
+  }
+
+  img {
+    width: 24px;
   }
 }
 
