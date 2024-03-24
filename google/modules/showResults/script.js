@@ -1,10 +1,18 @@
 document.addEventListener("DOMContentLoaded", main);
 
+function reescreverPagina(value){
+
+  //fazer solicitacao com o termo buscado e aguardar resposta que ja vem separada em head e body
+  createStorage(value)
+  window.location.reload();
+  main();
+}
+
+
 async function main() {
   const value = window.localStorage.getItem("@data");
 
   document.querySelector("title").textContent = value + " - Pesquisa Google";
-
   document.getElementById("value").textContent = value
 
   const results = await getResponse(value);

@@ -1,4 +1,3 @@
-
 form {
     margin: 0 auto;
     width: 400px;
@@ -37,12 +36,11 @@ textarea:focus {
   border-color: #000;
 }
 
-.button {
-  }
-  button {
-    /* Esta margem extra representa aproximadamente o mesmo espaço que o espaço entre as labels e os seus campos de texto*/
-    margin-left: 0.5em;
-  }
+
+button {
+  /* Esta margem extra representa aproximadamente o mesmo espaço que o espaço entre as labels e os seus campos de texto*/
+  margin-left: 0.5em;
+}
 
 fieldset {
     padding: 10px;
