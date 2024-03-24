@@ -31,5 +31,5 @@ Quando o formulario é enviado ele recarrega :(((.
 mudar cor do fundo do botar mostrar scores pra mesma do google quando tiver em hover
 tentar fazer aquele mini tedto aparacer quando qualquer botao ficar on hover
 sombra na accaixa de pesquisa
-hover na lupinha
+OK - hover na lupinha
 corrigir tamanho da barra de pesquisa (a lupa deveria ter um espaço menor)

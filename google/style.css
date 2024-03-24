@@ -100,9 +100,7 @@ button {
             text-decoration: none;
             color: rgb(18, 84, 172);
         }
-        a:hover {
-            color:rebeccapurple;
-        }
+        
    }
 }
 
@@ -139,6 +137,7 @@ button {
   /* background-color: red; */
 }
 
-a:hover, .nomes .a:hover {
+a:hover, .nomes ul li a:hover, .footer a:hover {
     color:#94507E;
+    /* color: black; */
 }

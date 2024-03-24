@@ -36,6 +36,21 @@ async function main() {
   document
     .getElementById("tabelaButton")
     .addEventListener("click", mostrarOcultarTabela);
+    
+  const img = buttonElement.querySelector("img");//Solução enquanto o button-search eh maior q a imagem da lupa
+
+    img.addEventListener('mouseenter', () => {
+      // buttonElement.classList.add('hover');
+      // const img = buttonElement.querySelector("img");
+      img.src = "img/lupa-hover.png";
+      
+  });
+
+  img.addEventListener('mouseleave', () => {
+      // buttonElement.classList.remove('hover');
+      // const img = buttonElement.querySelector("img");
+      img.src = "img/lupa.png";
+  });
 }
 
 async function getResponse(value) {
