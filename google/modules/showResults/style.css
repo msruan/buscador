@@ -166,4 +166,36 @@ section .bordaButton:hover {
   }
 }
 
+table {
+  margin-left: 220px;
+  }
 
+.page-card {
+  header {
+    margin-left: 220px;
+    font-size: 15px;
+    font-weight:100;
+
+  }
+  .description {
+    margin-left: 220px;
+    margin-top: 7px;
+    margin-bottom: 20px;
+    color: gray;
+
+  }
+    a {
+      text-decoration: none;
+    }
+
+    a:visited h2{
+      color:coral;
+    }
+
+    a:hover h2{
+      text-decoration: underline;
+    }
+    h2 {
+    color: rgb(68, 93, 136) ;
+    }
+}

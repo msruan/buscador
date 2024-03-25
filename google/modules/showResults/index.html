@@ -10,13 +10,13 @@
   <body id="body"> 
 
     <div class="search-bar">
-      <a href="../../index.html">
+      <a title="Página inicial do Google" href="../../index.html">
       <img id="logoGoogle" src="../../img/googleBranco.png" alt="">
       </a>
 
       <div id="search-box" class="caixaDePesquisa">
         <input type="text" id="value" class="search" onkeypress="handleEnterDown(event)">
-        <div class="button">
+        <div class="button" title="Fazer uma nova pesquisa">
           <button id="searchButton">
             <img src="img/lupa.png">
             <!-- search -->
@@ -28,7 +28,7 @@
 
     <section>
       <div class="main">
-        <div class="bordaButton">
+        <div class="bordaButton" title="Controle a exibição da pontuação utilizada no ranqueamento">
           <button id="tabelaButton">Abrir scores</button>
         </div>
       </div>
@@ -36,36 +36,11 @@
 
     <div class="caixa-de-cards">
       <template id="cardTemplate">
-        <div>
+        <div class="page-card">
           <header>
             <div class="titulo">
               <a href="" target="_blank">
                 <h2>${result.pagina.title}</h2>
-                <style>
-                  header {
-                    margin-left: 220px;
-                    font-size: 15px;
-                    font-weight:100;
-      
-                  }
-                  .description {
-                    margin-left: 220px;
-                    margin-top: 7px;
-                    margin-bottom: 20px;
-                    color: gray;
-
-                  }
-                    a {
-                      text-decoration: none;
-                    }
-                   h2 {
-                    color: rgb(70, 133, 241) ;
-                   }
-
-                   table {
-                    margin-left: 220px;
-                   }
-                </style>
               </a>
             </div>
           </header>
