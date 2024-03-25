@@ -1,6 +1,29 @@
 document.addEventListener("DOMContentLoaded", main);
 
 async function main() {
+  
+  await createHTML();
+
+  document
+    .getElementById("tabelaButton")
+    .addEventListener("click", changeVisibilityOfTable);
+    
+  makeNewSearch();
+  changeVisibilityOfBoxShadowOnSearchBox();
+  changeIconOfSearchButton()
+}
+
+function reescreverPagina(value){
+
+  updateStorage(value)
+  document.getElementById("head").innerHTML = null;
+  document.getElementById("body").innerHTML = null;
+  window.location.reload();
+  main();
+}
+
+async function createHTML(){
+  
   const value = window.localStorage.getItem("@data");
 
   document.querySelector("title").textContent = value + " - Pesquisa Google";
@@ -9,14 +32,6 @@ async function main() {
   const results = await getResponse(value);
   const cardBox = document.getElementsByClassName("caixa-de-cards")[0];
   const resultsTable = document.getElementById("results-table");
-
-  const inputElement = document.getElementsByClassName("search");
-  const buttonElement = document.getElementById("searchButton");
-
-  buttonElement.addEventListener("click", () => {
-    const valor = inputElement[0].value;
-    if (valor != null && valor != "") reescreverPagina(valor);
-  });
 
   console.log(results);
   results.forEach((result) => {
@@ -32,48 +47,25 @@ async function main() {
     const row = createRow(result);
     resultsTable.appendChild(row);
   });
-
-  document
-    .getElementById("tabelaButton")
-    .addEventListener("click", mostrarOcultarTabela);
-    
-  const img = buttonElement.querySelector("img");//Solução enquanto o button-search eh maior q a imagem da lupa
-
-    img.addEventListener('mouseenter', () => {
-      // buttonElement.classList.add('hover');
-      // const img = buttonElement.querySelector("img");
-      img.src = "img/lupa-hover.png";
-      
-  });
-
-  img.addEventListener('mouseleave', () => {
-      // buttonElement.classList.remove('hover');
-      // const img = buttonElement.querySelector("img");
-      img.src = "img/lupa.png";
-  });
 }
+
+function handleEnterDown(e) {
+  if (e.key === "Enter") {
+    const buttonElement = document.getElementById("searchButton");
+    buttonElement.click();
+  }
+}
+
+function updateStorage(value) {
+window.localStorage.setItem('@data', value)
+}
+
 
 async function getResponse(value) {
   const response = await fetch(`http://localhost:3000/search/${value}`);
   const data = await response.json();
 
   return data;
-}
-
-function mostrarOcultarTabela(event) {
-  event.preventDefault();
-  const buttonEscondedor = document.getElementById("tabelaButton");
-  const tabelaAEsconder = document.getElementById("results-table");
-  if (
-    tabelaAEsconder.style.display == "" ||
-    tabelaAEsconder.style.display == "none"
-  ) {
-    tabelaAEsconder.style.display = "block";
-    buttonEscondedor.textContent = "Ocultar scores";
-  } else {
-    buttonEscondedor.textContent = "Mostrar scores";
-    tabelaAEsconder.style.display = "none";
-  }
 }
 
 function createCard(data) {
@@ -129,22 +121,86 @@ function createRow(result) {
   return row;
 }
 
-function handleEnterDown(e) {
-  if (e.key === "Enter") {
-    const buttonElement = document.getElementById("searchButton");
-    buttonElement.click();
+function makeNewSearch(){
+
+  const inputElement = document.getElementsByClassName("search");
+  const searchButtonElement = document.getElementById("searchButton");
+
+  searchButtonElement.addEventListener("click", () => {
+    const valor = inputElement[0].value;
+    if (valor != null && valor != "") reescreverPagina(valor);
+  });
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               STYLE FUNCTIONS                              */
+/* -------------------------------------------------------------------------- */
+
+function changeVisibilityOfTable(event) {
+
+  event.preventDefault();
+  const buttonEscondedor = document.getElementById("tabelaButton");
+  const tabelaAEsconder = document.getElementById("results-table");
+  if (
+    tabelaAEsconder.style.display == "" ||
+    tabelaAEsconder.style.display == "none"
+  ) {
+    tabelaAEsconder.style.display = "block";
+    buttonEscondedor.textContent = "Ocultar scores";
+  } else {
+    buttonEscondedor.textContent = "Mostrar scores";
+    tabelaAEsconder.style.display = "none";
   }
 }
 
-function reescreverPagina(value){
+function changeVisibilityOfBoxShadowOnSearchBox(){
 
-  updateStorage(value)
-  document.getElementById("head").innerHTML = null;
-  document.getElementById("body").innerHTML = null;
-  window.location.reload();
-  main();
+  const searchBox = document.getElementById("search-box")
+  const searchInput = document.getElementById("value");
+
+  searchBox.addEventListener('mouseenter',() => {
+    searchBox.classList.add("hovered");
+  });
+
+  searchBox.addEventListener('mouseleave',() => {
+      if(! searchInput.matches(":focus")){
+        searchBox.classList.remove("hovered");
+      }
+  });
+
+  searchInput.addEventListener('focus', () => {
+    searchBox.classList.add("hovered");
+    // searchBox.style.boxShadow = "inset 3px 3px #1f1f1f, 3px 3px #1f1f1f";
+    
+});
+
+searchInput.addEventListener('blur', () => {
+    searchBox.classList.remove("hovered");
+    // searchBox.style.boxShadow = "none";
+
+});
 }
 
-function updateStorage(value) {
-window.localStorage.setItem('@data', value)
+function changeIconOfSearchButton(){
+
+  console.log("Mudando icone de search!");
+
+  const searchButtonElement = document.getElementById("searchButton");
+  const img = searchButtonElement.querySelector("img");
+
+    searchButtonElement.addEventListener('mouseenter', () => {//Trocar por img.addE... se quiser q fique roxo só quando encostar na lupa
+      // buttonElement.classList.add('hover');
+      // const img = buttonElement.querySelector("img");
+      img.src = "img/lupa-hover.png";
+      console.log("Eba, mouse entrou!")
+      
+  });
+
+  searchButtonElement.addEventListener('mouseleave', () => {
+      // buttonElement.classList.remove('hover');
+      // const img = buttonElement.querySelector("img");
+      img.src = "img/lupa.png";
+      console.log("Aff, mouse saiu!")
+
+  });
 }
