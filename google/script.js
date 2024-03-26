@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", main);
 
+
 async function main() {
   sincronizarFormulario();
-  // atualizarCamposFormulario();
+  
   const submitElement = document.getElementById("submit-btn");
   const resetElement = document.getElementById("reset-btn");
   const botaoocultarElement = document.getElementById("botao-ocultar");
@@ -25,6 +26,10 @@ async function main() {
   );
 }
 
+/**
+     * Recebe o input do local storage e abre uma página de resultados.
+     * @function
+     */
 async function searchByInput(value) {
   createStorage(value)
   window.open('./modules/showResults/index.html')
@@ -44,15 +49,15 @@ function handleEnterDown(e) {
 function mostrarOcultarFormulario(event) {
   const botaoocultar = document.getElementById("botao-ocultar");
   const form1 = document.getElementById("form1");
+
   if (form1.style.display == "" || form1.style.display == "none") {
     botaoocultar.textContent = "Ocultar painel";
-    // const fonte = document.getElementById("fonte");
-    // fonte.focus();
-    // botaoocultar.removeAttribute("href");
+
     form1.style.display = "block";
+
   } else {
     botaoocultar.textContent = "Mostrar painel";
-    // botaoocultar.setAttribute('href', '#form1');
+
     form1.style.display = "none";
   }
   return false;
@@ -62,7 +67,7 @@ async function atualizarJson(event) {
   event.preventDefault();
 
   let score = {
-    // "fonte": document.getElementById("fonte").value,
+  
     frequencia: parseInt(document.getElementById("i-frequencia").value),
     h1: parseInt(document.getElementById("i-h1").value),
     h2: parseInt(document.getElementById("i-h2").value),
@@ -75,7 +80,6 @@ async function atualizarJson(event) {
   };
 
   const jsonData = JSON.stringify(score);
-  console.log("Eu mandei...");
   console.table(jsonData);
 
   const response = await fetch(`http://localhost:3000/atualizar-json`, {
@@ -86,7 +90,6 @@ async function atualizarJson(event) {
     },
   })
     .then((data) => {
-      console.log("OIEEEE");
       console.log(data);
     })
     .catch((err) => console.log(err));

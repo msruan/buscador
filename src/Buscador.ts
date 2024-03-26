@@ -6,6 +6,13 @@ import { PaginaScore } from './PaginaScore';
 import { Score } from './Score';
 import { contarOcorrenciasSubstring, devolverData, takeLastElement } from "./utils";
 
+
+ /**
+     * A partir de um array de Páginas e um termo buscado, realiza o ranqueamento dos sites. Responsável por fornecer o array de Páginas para a classe Buscador.
+     * Baixa um conjunto de páginas a partir de uma URL inicial
+     * e realiza a instanciação dos objetos Página a partir dos sites locais no sistema de arquivos.
+     * @class
+     */
 export class Buscador {
 
     private indexador : Indexador
@@ -14,6 +21,32 @@ export class Buscador {
         this.indexador = indexador;
     }
 
+       /**
+     * A partir das páginas baixadas por um Indexador, percorre cada página calculando sua pontuação 
+     * a partir de um termo buscado e devolve um array ordenado das páginas e seus scores.
+     * @method
+     */
+       public async busca(searched_term : string) : Promise<PaginaScore[]>{
+
+        const paginas : Pagina[] = this.indexador.paginasBaixadas;
+        let paginasScores : PaginaScore[] = [];
+
+        for(let pagina of paginas){
+            const score : Score = this.calcularPontuacoes(pagina,searched_term);
+            const paginaScore : PaginaScore = new PaginaScore(pagina,score);
+            paginasScores.push(paginaScore);
+        }
+
+        let paginasScoresOrdenadas : PaginaScore[] = this.ordenarSites(paginasScores);
+    
+        return paginasScoresOrdenadas;        
+    }
+
+        /**
+     * Esta é uma função que recebe um array desordenado e aplica um 'sort' baseado primeiramente
+     * no maior score total e depois nos critérios de desempate.
+     * @method
+     */
     public ordenarSites(paginasScores: PaginaScore[]): PaginaScore[] {
 
         const paginasOrdenadas = paginasScores.sort( (a,b) => {
@@ -52,25 +85,8 @@ export class Buscador {
         return paginasOrdenadas;
     }
     
-    public async busca(searched_term : string) : Promise<PaginaScore[]>{
 
-        const paginas : Pagina[] = this.indexador.paginasBaixadas;
-        let paginasScores : PaginaScore[] = [];
-
-        for(let pagina of paginas){
-            const score : Score = this.calcularPontuacoes(pagina,searched_term);
-            const paginaScore : PaginaScore = new PaginaScore(pagina,score);
-            paginasScores.push(paginaScore);
-        }
-
-        let paginasScoresOrdenadas : PaginaScore[] = this.ordenarSites(paginasScores);
-        //Mostra tabelas com scores no console
-        // paginasScoresOrdenadas.reverse().forEach((pagina)=>pagina.exibirTabelaScore());
-
-        return paginasScoresOrdenadas;        
-    }
-
-    private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {// : ScoreObject
+    private calcularPontuacoes(pagina : Pagina, searched_term : string) : Score {
         const paginas : Pagina[] = this.indexador.paginasBaixadas;
         const html : string = pagina.content
         let score : Score  = new Score();
@@ -170,7 +186,11 @@ export class Buscador {
         scores.autoreferencia = autoreferencias * scores.autoreferencia;
     }
 
-    private calcularAutoridade(paginaACalcular : Pagina, paginas : Pagina[], scores : Score){
+       /**
+     * Percorre o array de Páginas e usa um dicionário para guardar o nome do site e o número de referências totais.
+     * @method
+     */
+    private calcularAutoridade(paginaACalcular : Pagina, paginas : Pagina[], scores : Score) : void{
         const links: Record<string,number> = {};
         const nomesDasPaginas : string [] = [];
 

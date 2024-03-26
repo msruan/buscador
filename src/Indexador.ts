@@ -4,6 +4,10 @@ import * as fs from 'fs';
 import { Pagina } from './Pagina';
 import { contarOcorrenciasSubstring, listarArquivosDoDiretorio, readWebPageHTML, takeLastElement, trasnformarURLRelativaEmNormal } from './utils';
 
+ /**
+ * Responsável por fornecer o array de Páginas para a classe Buscador.
+ * @class
+ */
 export class Indexador {
 
     private _paginasBaixadas : Pagina[] = [];
@@ -18,13 +22,17 @@ export class Indexador {
         return this._paginasBaixadas;
     }
 
-    public carregarPaginasBaixadas(){
+    /**
+     * Realiza a instanciação dos objetos Página a partir dos sites locais no sistema de arquivos.
+     * @class
+     */
+    public carregarPaginasBaixadas() : void{
 
         if(this.paginasBaixadas.length == 0){
 
             const nomeDasPaginasBaixadas : string[] = listarArquivosDoDiretorio(this._dirPaginasBaixadas);
 
-            if(nomeDasPaginasBaixadas.length > 0){//@Todo: substituir por uma exceção 'NotFound' posteriormente
+            if(nomeDasPaginasBaixadas.length > 0){
 
                 for(let nome of nomeDasPaginasBaixadas){
 
@@ -36,6 +44,10 @@ export class Indexador {
         }
     }
 
+    /**
+     * Baixa um conjunto de páginas a partir de uma URL inicial
+     * @method
+    */
     public async downloadPages(url : string) : Promise<void>{
 
         const file_name = takeLastElement(url)
@@ -59,9 +71,12 @@ export class Indexador {
         console.log("Indexador diz: páginas baixadas!")
     }
 
+    /**
+     * Salva o conteúdo de uma página localmente no sistema de arquivos
+     * @method
+    */
     private downloadPage(text: string, page_name : string) : void{
         
-        //@Todo: alterar essa lógica para conferir noa rray?
         if (!fs.existsSync(this._dirPaginasBaixadas)) {
             fs.mkdirSync(this._dirPaginasBaixadas, { recursive: true });
         }
