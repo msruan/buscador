@@ -7,7 +7,7 @@ Link para vídeo de explicação do código: https://drive.google.com/drive/fold
 ***
 
 ### Uso
-A página principal é o arquivo ___index.html____ que está no diretório ___google___.
+A página principal é o arquivo ___index.html___ que está no diretório ___google___.
 Para rodar o servidor, você deve executar o arquivo ___main.js___ estando dentro do diretório ___build___.<br>
 
 ***
