@@ -1,4 +1,4 @@
-#Buscador
+# Buscador
 A proposta do trabalho é realizar o download do HTML de uma página - e dos sites para os quais esta aponta - a partir de uma URL fornecida, 
 assim como permitir a realização da busca de palavras que estejam no conteúdo dos sites.<br>
 No backend foi utilizado Node.js com Typescript e Express, e para o front, HTML com CSS e Javascript.<br>
