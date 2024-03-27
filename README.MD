@@ -6,10 +6,16 @@ Link para vídeo de explicação do código: https://drive.google.com/drive/fold
 
 ***
 
-### Uso
-A página principal é o arquivo ___index.html___ que está no diretório ___google___.
-Para rodar o servidor, você deve executar o arquivo ___main.js___ estando dentro do diretório ___build___.<br>
-
+## Uso
+Tendo o Node instalado na sua máquina, baixe as depêndencias do projeto (estando na raiz do diretório ___buscador___) executando o seguinte comando:
+```sh
+npm i
+```
+Para rodar o servidor Node, execute o arquivo ___main.js___ enquanto você está dentro do diretório ___build___ (para evitar problemas com caminhos relativos).
+```sh
+node main.js
+```
+Após isso, basta acessar a página web que está no arquivo  ___index.html___ que está no diretório ___google___.
 ***
 
 ### Fotos
