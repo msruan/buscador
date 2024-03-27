@@ -15,7 +15,7 @@ Para rodar o servidor Node, execute o arquivo ___main.js___ enquanto você está
 ```sh
 node main.js
 ```
-Após isso, basta acessar a página web que está no arquivo  ___index.html___ que está no diretório ___google___.
+Após isso, basta acessar a página web do arquivo  ___index.html___ que está no diretório ___google___.
 ***
 
 ### Fotos
