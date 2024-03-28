@@ -1,11 +1,12 @@
-Stand by-> Suportar várias fontes de sites diferentes (limitado no momento pela questão de como nomear os arquivos e os diretorios)
+Stand by-> Suportar várias fontes de sites diferentes de forma consistente (limitado no momento pela questão de como nomear os arquivos e os diretorios)
 
         To do:
-(DIEGO) - Consertar a forma como o site de resultados eh feito (desistimos)
+Atualizar a rquisição atualizar-json para ser um PUT
+OK - Consertar a forma como o site de resultados eh feito 
 OK - Painel de controle sumiu :O (acho q eh so trazer aquela div paineldecontrole de volta...)
 OK - (A GENTE) - Tabela com scores
- - Esconder tabela
- - Estilizar página de resultados
+OK - Esconder tabela
+OK - Estilizar página de resultados
 
 Quando o formulario é enviado ele recarrega :(((.       
         Mas isso é de se investigar, pq no  commit 809d9224e7d0a4b0c2ef28d1d229880a879bfd71
