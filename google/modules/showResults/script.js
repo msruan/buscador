@@ -62,7 +62,7 @@ window.localStorage.setItem('@data', value)
 
 
 async function getResponse(value) {
-  const response = await fetch(`http://localhost:3000/search/${value}`);
+  const response = await fetch(`https://thebuscador.onrender.com/search/${value}`);
   const data = await response.json();
 
   return data;

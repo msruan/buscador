@@ -12,4 +12,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
             "velho" : -5,
         } */
 // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
-// const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
+// const default_scores : ScoreObject = jsonfile.readFileSync('./scores.json');

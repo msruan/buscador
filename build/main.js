@@ -43,7 +43,7 @@ const jsonfile = __importStar(require("jsonfile"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         let indexador = new Indexador_1.Indexador();
-        // const fonte : string = jsonfile.readFileSync('../scores.json').fonte;
+        // const fonte : string = jsonfile.readFileSync('./scores.json').fonte;
         // console.log("A fonte é "+fonte);
         yield indexador.downloadPages("https://msruan.github.io/samples/matrix.html");
         indexador.carregarPaginasBaixadas();
@@ -68,7 +68,7 @@ function main() {
         }));
         app.post("/atualizar-scores", (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const scores = jsonfile.readFileSync("../scores.json");
+                const scores = jsonfile.readFileSync("./scores.json");
                 res.json(scores);
             }
             catch (error) {
@@ -79,7 +79,7 @@ function main() {
         app.post("/resetar-scores", (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const scores = jsonfile.readFileSync("../default_scores.json");
-                jsonfile.writeFileSync("../scores.json", scores);
+                jsonfile.writeFileSync("./scores.json", scores);
                 res.json(scores);
             }
             catch (error) {
@@ -90,7 +90,7 @@ function main() {
         app.post("/atualizar-json", (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const newData = req.body;
-                jsonfile.writeFileSync("../scores.json", newData);
+                jsonfile.writeFileSync("./scores.json", newData);
                 res.json(newData);
             }
             catch (error) {

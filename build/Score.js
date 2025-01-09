@@ -27,7 +27,7 @@ exports.Score = void 0;
 const jsonfile = __importStar(require("jsonfile"));
 class Score {
     constructor() {
-        const default_scores = jsonfile.readFileSync('../scores.json'); //@Todo: essa deveria ser a lógica? 
+        const default_scores = jsonfile.readFileSync('./scores.json'); //@Todo: essa deveria ser a lógica? 
         //Por que simplesmente executar o programa do lugar errado já ocasionaria em aml funcionamento
         this.h1 = default_scores.h1;
         this.h2 = default_scores.h2;
@@ -70,4 +70,4 @@ exports.Score = Score;
             "velho" : -5,
         } */
 // jsonfile.writeFileSync('buscador/scores.json',pontuacoes);
-// const default_scores : ScoreObject = jsonfile.readFileSync('../scores.json');
+// const default_scores : ScoreObject = jsonfile.readFileSync('./scores.json');

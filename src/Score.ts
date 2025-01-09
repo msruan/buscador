@@ -13,7 +13,7 @@ export class Score {
     velho: number;
 
     constructor() {
-        const default_scores = jsonfile.readFileSync('../scores.json');
+        const default_scores = jsonfile.readFileSync('./scores.json');
         this.h1 = default_scores.h1;
         this.h2 = default_scores.h2;
         this.p = default_scores.p;

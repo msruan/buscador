@@ -41,7 +41,7 @@ async function main() {
   // É usada para atualizar os campos visuais do formulário sempre que ele é carregado pela primeira vez.
   app.post("/atualizar-scores", async (req, res) => {
     try {
-      const scores = jsonfile.readFileSync("../scores.json");
+      const scores = jsonfile.readFileSync("./scores.json");
       res.json(scores);
     } catch (error) {
       console.error(error);
@@ -52,7 +52,7 @@ async function main() {
   app.post("/resetar-scores", async (req, res) => {
     try {
       const scores = jsonfile.readFileSync("../default_scores.json");
-      jsonfile.writeFileSync("../scores.json", scores);
+      jsonfile.writeFileSync("./scores.json", scores);
       res.json(scores);
     } catch (error) {
       console.error(error);
@@ -63,7 +63,7 @@ async function main() {
   app.post("/atualizar-json", async (req, res) => {
     try {
       const newData = req.body;
-      jsonfile.writeFileSync("../scores.json", newData);
+      jsonfile.writeFileSync("./scores.json", newData);
       res.json(newData);
     } catch (error) {
       console.error(error);

@@ -82,7 +82,7 @@ async function atualizarJson(event) {
   const jsonData = JSON.stringify(score);
   console.table(jsonData);
 
-  const response = await fetch(`http://localhost:3000/atualizar-json`, {
+  const response = await fetch(`https://thebuscador.onrender.com/atualizar-json`, {
     method: "POST",
     body: jsonData,
     headers: {
@@ -106,7 +106,7 @@ function atualizarCampo(novoValor, id) {
 
 async function resetarFormulario(){
   try {
-    const response = await fetch(`http://localhost:3000/resetar-scores`, {
+    const response = await fetch(`https://thebuscador.onrender.com/resetar-scores`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -128,7 +128,7 @@ async function resetarFormulario(){
 
 async function sincronizarFormulario(){
   try {
-    const response = await fetch(`http://localhost:3000/atualizar-scores`, {
+    const response = await fetch(`https://thebuscador.onrender.com/atualizar-scores`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
